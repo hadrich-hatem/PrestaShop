@@ -116,6 +116,21 @@ class CommonClient {
       .then((text) => expect(text).to.be.equal(message));
   }
 
+  checkAttributeValue(selector, attribute, value) {
+    return this.client
+      .waitForExist(selector, 90000)
+      .then(() => this.client.getAttribute(selector, attribute))
+      .then((text) => expect(text).to.be.equal(value));
+  }
+
+  testElementVisibility(selector) {
+    return this.client
+        .isVisible(selector)
+        .then((isVisible) => {
+          global.test = isVisible;
+        });
+  }
+
   uploadPicture(picture, selector, className = "dz-hidden-input") {
     return this.client
       .execute(function (className) {

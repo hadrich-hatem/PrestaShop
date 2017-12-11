@@ -16,6 +16,10 @@ module.exports = {
     country_input: '//*[@id="id_country"]',
     phone_input: '//*[@id="phone"]',
     other_input: '//*[@id="other"]',
-    save_button:'//*[@id="address_form_submit_btn"]'
+    save_button:'//*[@id="address_form_submit_btn"]',
+    filter_by_address_input:'//*[@id="form-address"]/div/div[2]/table/thead/tr[2]/th[5]/input',
+    address_search_button:'//*[@id="submitFilterButtonaddress"]',
+    click_outside: '//*[@id="form-address"]/div/div[2]/table/thead/tr[2]/th[1]',
+    address_value: '//*[@id="form-address"]/div/div[2]/table/tbody/tr[1]/td[%ID]'
   }
-}
+};
