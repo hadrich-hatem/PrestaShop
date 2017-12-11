@@ -1,5 +1,5 @@
-module.exports =Object.assign(
-  {},
-  require('./addresses'),
-  require('./customer')
-  );
+module.exports = Object.assign(
+    {},
+    require('./addresses'),
+    require('./customer')
+);
