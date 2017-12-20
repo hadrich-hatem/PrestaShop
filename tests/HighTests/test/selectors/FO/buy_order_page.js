@@ -7,6 +7,7 @@ module.exports = {
     product_name_details: '[itemprop="name"]',
     product_price_details: '[itemprop="price"]',
     product_quantity_details: '#quantity_wanted',
+    product_discount_details: '//*[@id="main"]//span[contains(@class, "discount")]',
     product_name: '(//div[@class="product-line-info"])[1]/a',
     product_price: '//span[@class="price"]',
     checkout_step2_continue_button: '//*[@id="checkout-addresses-step"]/div/div/form/div[2]/button',
@@ -31,7 +32,5 @@ module.exports = {
     order_shipping_prince_value: '//*[@id="order-items"]/div/table/tbody/tr[2]/td[2]',
     customer_name: '//*[@id="_desktop_user_info"]/div/a[2]/span',
     shipping_method: '//*[@id="order-details"]/ul/li[3]',
-
-
   }
 };

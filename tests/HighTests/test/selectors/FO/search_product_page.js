@@ -6,6 +6,7 @@ module.exports = {
     search_button: '.material-icons.search',
     product_result_name: '.h3.product-title > a',
     product_result_price: '[itemprop="price"]',
+    product_result_discount: '//*[@id="js-product-list"]//span[contains(@class, "discount-percentage")]',
     attribut_name: '//*[@id="add-to-cart-or-refresh"]/div[1]/div/span',
     feature_name: '//*[@id="product-details"]/section/dl/dt',
     feature_value: '//*[@id="product-details"]/section/dl/dd',
