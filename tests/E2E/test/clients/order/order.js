@@ -3,8 +3,6 @@ const {OrderPage} = require('../../selectors/BO/order_page');
 const {CreateOrder} = require('../../selectors/BO/create_order');
 const {buyOrderPage}= require('../../selectors/FO/buy_order_page');
 
-global.tab = [];
-
 class Order extends CommonClient {
 
   checkBasicToTalPrice() {

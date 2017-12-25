@@ -9,6 +9,8 @@ var request = require('request');
 
 var pdfUtil = require('pdf-to-text');
 
+global.tab = [];
+
 class CommonClient {
     constructor() {
         this.client = getClient();
@@ -155,6 +157,21 @@ class CommonClient {
                     .then((text) => expect(text).to.not.equal(textToCheckWith));
                 break;
         }
+    }
+
+    checkAttributeValue(selector, attribute, value) {
+        return this.client
+            .waitForExist(selector, 90000)
+            .then(() => this.client.getAttribute(selector, attribute))
+            .then((text) => expect(text).to.be.equal(value));
+    }
+
+    isVisible(selector) {
+        return this.client
+            .isVisible(selector)
+            .then((isVisible) => {
+                global.isVisible = isVisible;
+            });
     }
 
     uploadPicture(picture, selector, className = "dz-hidden-input") {
