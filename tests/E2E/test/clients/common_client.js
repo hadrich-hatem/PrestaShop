@@ -68,6 +68,12 @@ class CommonClient {
         }
     }
 
+    selectLanguage(selector, option, language, id) {
+        return this.client
+            .waitForExistAndClick(selector)
+            .waitForExistAndClick(option.replace('%LANG', language).replace('%ID', id))
+    }
+
     open() {
         return this.client.init().windowHandleSize({width: 1280, height: 1024});
     }
@@ -111,6 +117,10 @@ class CommonClient {
         return this.client.waitAndSelectByVisibleText(selector, value, timeout);
     }
 
+    switchWindow(id) {
+        return this.client.switchWindow(id);
+    }
+
     addFile(selector, picture, value = 150) {
         return this.client
             .scrollTo(selector, value)
@@ -132,22 +142,25 @@ class CommonClient {
         }
     }
 
-    checkTextValue(selector, textToCheckWith, parameter = 'equal') {
+    checkTextValue(selector, textToCheckWith, parameter = 'equal', pause = 0) {
         switch (parameter) {
             case "contain":
                 return this.client
+                    .pause(pause)
                     .waitForExist(selector, 9000)
                     .then(() => this.client.getText(selector))
                     .then((text) => expect(text).to.contain(textToCheckWith));
                 break;
             case "equal":
                 return this.client
+                    .pause(pause)
                     .waitForExist(selector, 9000)
                     .then(() => this.client.getText(selector))
                     .then((text) => expect(text).to.equal(textToCheckWith));
                 break;
             case "notequal":
                 return this.client
+                    .pause(pause)
                     .waitForExist(selector, 9000)
                     .then(() => this.client.getText(selector))
                     .then((text) => expect(text).to.not.equal(textToCheckWith));
@@ -216,6 +229,18 @@ class CommonClient {
     waitForVisible(selector, timeout = 90000) {
       return this.client
 	.waitForVisible(selector, timeout)
+    }
+
+    pause(timeout) {
+        return this.client.pause(timeout)
+    }
+
+    checkElement(selector, pause = 0) {
+        return this.client
+            .pause(pause)
+            .scrollTo(selector)
+            .isExisting(selector)
+            .then((isExisting) => expect(isExisting).to.be.true)
     }
 }
 

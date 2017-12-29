@@ -53,8 +53,8 @@ function initCommands(client) {
 
     client.addCommand('scrollTo', function (selector, margin = 150) {
         return client
-            .getLocation(selector, 'y')
-            .then((location) => client.scroll(0, location - margin));
+            .getLocation(selector)
+            .then((location) => client.scroll(location.x, location.y - margin));
     });
 
     client.addCommand('scrollWaitForExistAndClick', function (selector, margin = 150, timeout = 90000) {
@@ -111,6 +111,13 @@ function initCommands(client) {
             .waitForExistAndClick(selector.sign_out_button)
             .waitForExist(selector.sign_in_button, 90000)
             .deleteCookie();
+    });
+
+    client.addCommand('switchWindow', function (id) {
+        return client
+            .getTabIds()
+            .then(ids => client.switchTab(ids[id]))
+            .refresh()
     });
 }
 
