@@ -27,7 +27,7 @@ scenario('Check the attribute deletion', () => {
   }, 'attribute_and_feature');
   scenario('Check that the attribute is well deleted in Front Office', client => {
     test('should set the shop language to "English"', () => client.changeLanguage('english'));
-    test('should search for the product', () => client.searchByValue(SearchProductPage.search_input, SearchProductPage.search_button, 'attribute'));
+    test('should search for the product', () => client.searchByValue(SearchProductPage.search_input, SearchProductPage.search_button, 'Att' + date_time));
     test('should go to the product page', () => client.waitForExistAndClick(SearchProductPage.product_result_name));
     test('should Check that the attribute has been deleted in the Front Office', () => client.checkDeleted(SearchProductPage.attribut_name));
   }, 'attribute_and_feature');

@@ -1,6 +1,5 @@
 const {AccessPageBO} = require('../../../selectors/BO/access_page');
 const {AccessPageFO} = require('../../../selectors/FO/access_page');
-const {OnBoarding} = require('../../../selectors/BO/onboarding');
 const {CatalogPage} = require('../../../selectors/BO/catalogpage/index');
 const {AttributeSubMenu} = require('../../../selectors/BO/catalogpage/attribute_submenu');
 const {AddProductPage} = require('../../../selectors/BO/add_product_page');
@@ -8,7 +7,7 @@ const {SearchProductPage} = require('../../../selectors/FO/search_product_page')
 const common_scenarios = require('../2_product/product');
 
 var productData = {
-    name: 'Attribute',
+    name: 'Att',
     quantity: "10",
     price: '5',
     image_name: 'image_test.jpg',
@@ -59,7 +58,7 @@ scenario('Check the attribute creation', () => {
   }, 'attribute_and_feature');
   scenario('Check that the attribute is well created in the Front Office', client => {
     test('should set the shop language to "English"', () => client.changeLanguage('english'));
-    test('should search for the product', () => client.searchByValue(SearchProductPage.search_input, SearchProductPage.search_button, 'attribute'));
+    test('should search for the product', () => client.searchByValue(SearchProductPage.search_input, SearchProductPage.search_button, 'Att' + date_time));
     test('should go to the product page', () => client.waitForExistAndClick(SearchProductPage.product_result_name));
     test('should check that the product attribute name is "'+'attribute' + date_time+'"', () => client.checkTextValue(SearchProductPage.attribut_name, 'attribute' + date_time));
     test('should check that the first attribute value is equal to 10', () => client.checkTextValue(SearchProductPage.attribut_value_1, '10'));

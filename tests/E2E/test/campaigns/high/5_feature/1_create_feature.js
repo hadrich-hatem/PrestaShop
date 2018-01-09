@@ -7,8 +7,8 @@ const {AddProductPage} = require('../../../selectors/BO/add_product_page');
 const {SearchProductPage} = require('../../../selectors/FO/search_product_page');
 const common_scenarios = require('../2_product/product');
 
-productData = {
-  name: 'Feature',
+var productData = {
+  name: 'Feat',
   quantity: "10",
   price: '5',
   image_name: 'image_test.jpg',
@@ -60,7 +60,7 @@ scenario('Check the feature creation', () => {
   }, 'attribute_and_feature');
   scenario('Check that the feature is well created in Front Office', client => {
     test('should set the shop language to "English"', () => client.changeLanguage('english'));
-    test('should search for the product', () => client.searchByValue(SearchProductPage.search_input, SearchProductPage.search_button, 'Feature'));
+    test('should search for the product', () => client.searchByValue(SearchProductPage.search_input, SearchProductPage.search_button, 'Feat' + date_time));
     test('should go to the product page', () => client.waitForExistAndClick(SearchProductPage.product_result_name));
     test('should check that the name of created feature is : "'+ 'Feature' + date_time +'"', () => client.checkTextValue(SearchProductPage.feature_name, 'Feature' + date_time));
     test('should check that the value of created feature is : "Feature Value"', () => client.checkTextValue(SearchProductPage.feature_value, 'Feature Value'));

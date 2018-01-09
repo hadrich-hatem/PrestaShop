@@ -57,13 +57,6 @@ class CommonClient {
         return this.client.saveScreenshot(`test/screenshots/${this.client.desiredCapabilities.browserName}_exception_${global.date_time}.png`);
     }
 
-    successPanel(index) {
-        return this.client
-            .waitForExist(selector.CatalogPage.success_panel)
-            .then(() => this.client.getText(selector.CatalogPage.success_panel))
-            .then((text) => expect(text.substr(2)).to.be.equal(index));
-    }
-
     changeLanguage(language) {
         if (language === "francais") {
             return this.client
