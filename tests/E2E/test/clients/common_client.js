@@ -28,6 +28,14 @@ class CommonClient {
         return this.client.signOutFO(selector);
     }
 
+    accessToBO(selector) {
+        return this.client.accessToBO(selector);
+    }
+
+    accessToFO(selector) {
+        return this.client.accessToFO(selector);
+    }
+
     goToSubtabMenuPage(menuSelector, selector) {
         return this.client
             .waitForExist(menuSelector, 90000)
@@ -114,6 +122,10 @@ class CommonClient {
 
     waitAndSelectByVisibleText(selector, value, timeout = 90000) {
         return this.client.waitAndSelectByVisibleText(selector, value, timeout);
+    }
+
+    waitAndSelectByAttribute(selector, attribute, value, pause = 0, timeout = 90000) {
+        return this.client.waitAndSelectByAttribute(selector, attribute, value, pause, timeout);
     }
 
     addFile(selector, picture, value = 150) {

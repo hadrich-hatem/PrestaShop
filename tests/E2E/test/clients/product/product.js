@@ -127,6 +127,16 @@ class Product extends CommonClient {
       .waitAndSetValue(AddProductPage.priceTE_shortcut, data.common.priceTE)
   }
 
+  clickPageNext(selector) {
+    if (global.isVisible) {
+      return this.client
+          .click(selector)
+          .pause(2000)
+    } else {
+      return this.client.pause(1000)
+    }
+  }
+
 }
 
 module.exports = Product;
