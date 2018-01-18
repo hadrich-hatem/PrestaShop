@@ -1,6 +1,6 @@
 var CommonClient = require('./../common_client');
 const {AddProductPage} = require('../../selectors/BO/add_product_page');
-const {CatalogPage} = require('../../selectors/BO/catalogpage/index');
+const {Menu} = require('../../selectors/BO/menu.js');
 var data = require('./../../datas/product-data');
 
 class CheckProductBO extends CommonClient {
@@ -8,7 +8,7 @@ class CheckProductBO extends CommonClient {
   goToCatalog() {
     return this.client
       .pause(2000)
-      .waitForExistAndClick(CatalogPage.menu_button)
+      .waitForExistAndClick(Menu.Sell.Catalog.catalog_menu)
   }
 
   searchProductByName(productName) {

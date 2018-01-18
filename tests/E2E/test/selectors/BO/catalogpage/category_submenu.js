@@ -1,6 +1,5 @@
 module.exports = {
     CategorySubMenu: {
-        submenu: '//*[@id="subtab-AdminCategories"]/a',
         new_category_button: '//*[@id="page-header-desc-category-new_category"]/div',
         name_input: '//*[@id="name_1"]',
         description_textarea: 'textarea#description_1',

@@ -1,12 +1,13 @@
 const {AddProductPage} = require('../../../selectors/BO/add_product_page');
 const {AccessPageBO} = require('../../../selectors/BO/access_page');
+const {Menu} = require('../../../selectors/BO/menu.js');
 var data = require('./../../../datas/product-data');
 let promise = Promise.resolve();
 
 scenario('Create Standard Product', client => {
   test('should open browser', () => client.open());
   test('should log in successfully in BO', () => client.signInBO(AccessPageBO));
-  test('should go to "Catalog"', () => client.waitForExistAndClick(AddProductPage.products_subtab));
+  test('should go to "Catalog"', () => client.waitForExistAndClick(Menu.Sell.Catalog.catalog_menu));
   test('should click on "NEW PRODUCT"', () => client.waitForExistAndClick(AddProductPage.new_product_button));
 
   scenario('Edit Basic settings', client => {

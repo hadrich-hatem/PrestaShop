@@ -1,12 +1,12 @@
 const {AccessPageFO} = require('../../../selectors/FO/access_page');
 const {AccessPageBO} = require('../../../selectors/BO/access_page');
-const {ShopParametre} = require('../../../selectors/BO/shopParameters/');
 const {ProductSettings} = require('../../../selectors/BO/shopParameters/product_settings');
-const {productPage}= require('../../../selectors/FO/product_page');
-const {CheckoutOrderPage}= require('../../../selectors/FO/order_page');
+const {productPage} = require('../../../selectors/FO/product_page');
+const {CheckoutOrderPage} = require('../../../selectors/FO/order_page');
 const {SearchProductPage} = require('../../../selectors/FO/search_product_page');
 const {AddProductPage} = require('../../../selectors/BO/add_product_page');
 const common_scenarios = require('../02_product/product');
+const {Menu} = require('../../../selectors/BO/menu.js');
 
 var productData = [{
   name: 'A',
@@ -31,7 +31,7 @@ scenario('Create standard product "A" and pack product "B"', client => {
     test('should login successfully in the Back Office', () => client.signInBO(AccessPageBO));
   }, 'product/product');
   scenario('Change configuration of "Default pack stock management" and "Allow ordering of out-of-stock products"', client => {
-    test('Should go to "Product settings" page', () => client.goToSubtabMenuPage(ShopParametre.menu_button, ProductSettings.menu));
+    test('Should go to "Product settings" page', () => client.goToSubtabMenuPage(Menu.Configure.ShopParameters.shop_parameters_menu, Menu.Configure.ShopParameters.product_settings_submenu));
     test('Should click on "NO" button to disable ordering of out-of-stock products', () => client.scrollWaitForExistAndClick(ProductSettings.disableOrderOutOfStock_button));
     test('Should select "Decrement both" of "Default pack stock management"', () => client.waitAndSelectByValue(ProductSettings.stockManagement_button, 2));
     test('Should click "Save" button', () => client.waitForExistAndClick(ProductSettings.save_button));
@@ -58,4 +58,4 @@ scenario('Check "Orders"', client => {
     test('should go to the product page', () => client.waitForExistAndClick(SearchProductPage.product_result_name));
     test('should verify that the button "AJOUTER AU PANIER" is DISABLED', () => client.checkEnable(CheckoutOrderPage.add_to_cart_button));
   }, 'order');
-}, 'product/product',true);
+}, 'product/product', true);

@@ -17,7 +17,6 @@ scenario('Configure shop in the Back Office', () => {
     test('should verify the appearance of the green validation', () => client.checkTextValue(ShopParametersBO.success_panel, "The settings have been successfully updated."));
     test('should click on "Maintenance" tab', () => client.waitForExistAndClick(ShopParametersBO.maintenance_tab));
     test('should set the "Enable shop" to "NO"', () => client.waitForExistAndClick(ShopParametersBO.enable_shop.replace("%s", 'off')));
-
     test('should set the "Custom maintenance" textarea', () => {
       return promise
         .then(() => client.waitForExistAndClick(ShopParametersBO.source_code_button.replace("%ID", 1)))

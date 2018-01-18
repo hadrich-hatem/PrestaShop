@@ -1,7 +1,5 @@
 module.exports = {
     Customer: {
-        customer_menu: '//*[@id="subtab-AdminParentCustomer"]/a',
-        customers_subtab: '//*[@id="subtab-AdminCustomers"]/a',
         new_customer_button: '//*[@id="page-header-desc-customer-new_customer"]',
         social_title_button: '//*[@id="gender_1"]',
         first_name_input: '//*[@id="firstname"]',

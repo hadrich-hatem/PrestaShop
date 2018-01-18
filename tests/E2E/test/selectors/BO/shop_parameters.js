@@ -1,6 +1,5 @@
 module.exports = {
     ShopParametersBO: {
-        menu: '//*[@id="subtab-ShopParameters"]/a',
         maintenance_tab: '//*[@id="content"]//a[text() = "Maintenance"]',
         success_panel: '//*[@id="content"]/div[@class="bootstrap"]/div[contains(@class, "success")]',
         enable_shop: '//*[@id="conf_id_PS_SHOP_ENABLE"]//label[contains(@for, "%s")]',

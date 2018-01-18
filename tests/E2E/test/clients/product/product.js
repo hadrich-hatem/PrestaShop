@@ -3,7 +3,6 @@ const {AddProductPage} = require('../../selectors/BO/add_product_page');
 const {ProductList} = require('../../selectors/BO/product_list');
 var data = require('./../../datas/product-data');
 var path = require('path');
-
 global.productIdElement = [];
 
 class Product extends CommonClient {

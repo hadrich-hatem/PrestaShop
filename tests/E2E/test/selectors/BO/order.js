@@ -1,6 +1,5 @@
 module.exports = {
   OrderPage:{
-    orders_subtab: '#subtab-AdminParentOrders',
     form: '#form-order',
     view_order_button: '//*[@id="form-order"]//tr[%NUMBER]//div[contains(@class,"pull-right")]//a',
     order_state_select: '//*[@id="id_order_state"]',
@@ -13,7 +12,6 @@ module.exports = {
     edit_product_button: '//*[@id="orderProducts"]//button[contains(@class,"edit_product_change_link")]',
     product_basic_price: '//*[@id="orderProducts"]//tr[1]//input[contains(@class,"edit_product_price_tax_excl")]',
     customer_name: '//*[@id="content"]//div[@class="message-body"]//h4[@class="message-item-heading"]',
-    order_submenu: '//*[@id="subtab-AdminOrders"]/a',
     document_submenu:'//*[@id="tabOrder"]/li[2]/a',
     download_invoice_button:'//*[@id="documents_table"]//tr[1]/td[3]/a',
     download_delivery_button:'//*[@id="documents_table"]//tr[3]/td[3]/a',

@@ -1,6 +1,5 @@
 module.exports = {
     Addresses: {
-        addresses_menu: '//*[@id="subtab-AdminAddresses"]/a',
         new_address_button: '//*[@id="page-header-desc-address-new_address"]',
         email_input: '//*[@id="email"]',
         id_number_input: '//*[@id="dni"]',

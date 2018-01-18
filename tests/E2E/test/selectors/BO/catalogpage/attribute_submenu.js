@@ -1,6 +1,5 @@
 module.exports = {
   AttributeSubMenu:{
-    submenu: '//*[@id="subtab-AdminParentAttributesGroups"]/a',
     add_new_attribute: '//*[@id="page-header-desc-attribute_group-new_attribute_group"]',
     name_input: '//*[@id="name_1"]',
     public_name_input: '//*[@id="public_name_1"]',

@@ -1,6 +1,5 @@
 module.exports = {
     ModulePage: {
-        modules_subtab: '#subtab-AdminParentModulesSf',
         upload_button: '//*[@id="page-header-desc-configuration-add_module"]',
         zip_file_input: '//*[@id="importDropzone"]/input',
         module_import_success: '//*[@id="importDropzone"]/div[3]/p[1]',

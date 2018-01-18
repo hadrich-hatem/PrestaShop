@@ -1,6 +1,5 @@
 module.exports = {
   Stock:{
-    submenu: '//*[@id="collapse-9"]/li[8]/a',
     tabs: '//*[@id="tab"]/li[1]/a',
     product_quantity_input: '(//*[@id="app"]//div[contains(@class,"edit-qty")])[%O]/input',
     product_quantity: '//*[@id="app"]//tr[%O]/td[7]',

@@ -1,19 +1,20 @@
 const {AddProductPage} = require('../../../selectors/BO/add_product_page');
 const {AccessPageBO} = require('../../../selectors/BO/access_page');
 var data = require('./../../../datas/product-data');
+const {Menu} = require('../../../selectors/BO/menu.js');
 let promise = Promise.resolve();
 
 scenario('Create a pack of products', client => {
   test('should open browser', () => client.open());
   test('should log in successfully in BO', () => client.signInBO(AccessPageBO));
-  test('should go to "Catalog"', () => client.waitForExistAndClick(AddProductPage.products_subtab));
+  test('should go to "Catalog"', () => client.waitForExistAndClick(Menu.Sell.Catalog.catalog_menu));
   test('should click on "NEW PRODUCT"', () => client.waitForExistAndClick(AddProductPage.new_product_button));
 
   scenario('Edit the Basic settings', client => {
     test('should set the "product name"', () => client.waitAndSetValue(AddProductPage.product_name_input, data.pack.name + date_time));
     test('should select the "Pack of products"', () => client.waitAndSelectByValue(AddProductPage.product_type, 1));
-    test('should set the "Add products to your pack"', () => client.addPackProduct(data.pack.pack.pack1.search,data.pack.pack.pack1.quantity));
-    test('should set the "Add products to your pack"', () => client.addPackProduct(data.pack.pack.pack2.search,data.pack.pack.pack2.quantity));
+    test('should set the "Add products to your pack"', () => client.addPackProduct(data.pack.pack.pack1.search, data.pack.pack.pack1.quantity));
+    test('should set the "Add products to your pack"', () => client.addPackProduct(data.pack.pack.pack2.search, data.pack.pack.pack2.quantity));
     test('set the "Quantity" of product', () => client.waitAndSetValue(AddProductPage.quantity_shortcut_input, "10"));
     test('should upload the product picture', () => client.uploadPicture('image_test.jpg', AddProductPage.picture));
     test('should click on "CREATE A CATEGORY"', () => client.scrollWaitForExistAndClick(AddProductPage.product_create_category_btn, 50));

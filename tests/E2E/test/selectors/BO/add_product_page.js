@@ -3,7 +3,6 @@ module.exports = {
     exit_welcome_button: '[class="btn btn-tertiary-outline btn-lg onboarding-button-shut-down"]',
     click_outside: '//*[@id="product_catalog_list"]/div[2]/div/table/thead/tr[1]/th[3]',
     logout: '#header_logout',
-    products_subtab: '#subtab-AdminCatalog',
     go_to_catalog_button: '#form > div.product-footer > div.text-lg-right > div > div.dropdown-menu > a.dropdown-item.go-catalog.js-btn-save',
     more_option_button: '.btn.btn-primary.dropdown-toggle',
     new_product_button: '#page-header-desc-configuration-add',

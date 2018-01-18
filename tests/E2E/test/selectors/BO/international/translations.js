@@ -1,7 +1,5 @@
 module.exports = {
   Translations:{
-    translations_menu:'//*[@id="subtab-AdminTranslations"]/a',
-    international_menu:'//*[@id="subtab-AdminInternational"]/a',
     translations_type:'//*[@id="type"]',
     translations_language:'//*[@id="translations-languages"]',
     modify_button:'//*[@id="modify-translations"]',

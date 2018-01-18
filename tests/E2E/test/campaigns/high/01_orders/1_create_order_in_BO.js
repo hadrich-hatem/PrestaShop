@@ -2,6 +2,8 @@ const {AccessPageBO} = require('../../../selectors/BO/access_page');
 const {OrderPage} = require('../../../selectors/BO/order');
 const {CreateOrder} = require('../../../selectors/BO/order');
 const {OnBoarding} = require('../../../selectors/BO/onboarding.js');
+const {Menu} = require('../../../selectors/BO/menu.js');
+
 let promise = Promise.resolve();
 
 scenario('Create order in BO', () => {
@@ -19,7 +21,7 @@ scenario('Create order in BO', () => {
   }, 'order');
 
   scenario('Create order in BO', client => {
-    test('should go to orders list', () => client.goToSubtabMenuPage(OrderPage.orders_subtab, OrderPage.order_submenu));
+    test('should go to orders list', () => client.goToSubtabMenuPage(Menu.Sell.Orders.orders_menu, Menu.Sell.Orders.orders_submenu));
     test('should click on "Add new order" button', () => client.waitForExistAndClick(CreateOrder.new_order_button));
     test('should search for a customer', () => client.waitAndSetValue(CreateOrder.customer_search_input, 'john doe'));
     test('should choose the customer', () => client.waitForExistAndClick(CreateOrder.choose_customer_button));
