@@ -106,8 +106,10 @@ class CommonClient {
       .waitForExistAndClick(selector, timeout);
   }
 
-  waitAndSetValue(selector, value, timeout = 90000) {
-    return this.client.waitAndSetValue(selector, value, timeout);
+  waitAndSetValue(selector, value, pause = 0, timeout = 90000) {
+    return this.client
+      .pause(pause)
+      .waitAndSetValue(selector, value, timeout);
   }
 
   scrollTo(selector, margin) {
@@ -153,6 +155,13 @@ class CommonClient {
         .then(() => this.client.getText(selector))
         .then((variable) => global.tab[globalVar] = variable)
     }
+  }
+
+  getAttributeInVar(selector, attribute, globalVar) {
+    return this.client
+      .waitForExist(selector, 9000)
+      .then(() => this.client.getAttribute(selector, attribute))
+      .then((variable) => global.tab[globalVar] = variable)
   }
 
   checkTextValue(selector, textToCheckWith, parameter = 'equal', pause = 0) {
@@ -281,6 +290,9 @@ class CommonClient {
     return this.client.pause(timeout)
   }
 
+  alertAccept(){
+    return this.client.alertAccept()
+  }
 }
 
 module.exports = CommonClient;
