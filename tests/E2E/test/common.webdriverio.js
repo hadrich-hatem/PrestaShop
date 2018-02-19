@@ -1,6 +1,6 @@
 'use strict';
 
-var client;
+var client, browserA, browserB;
 var webdriverio = require('webdriverio');
 var globals = require('./globals.webdriverio.js');
 
@@ -17,19 +17,9 @@ if (typeof global.selenium_url !== 'undefined') {
   options.host = global.selenium_url;
 }
 
-var options2 = {
-  logLevel: 'silent',
-  waitForTimeout: 30000,
-  desiredCapabilities: {
-    browserName: 'chrome',
-    'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-    username: process.env.SAUCE_USERNAME,
-    access_key: process.env.SAUCE_ACCESS_KEY,
-    screenResolution: "1680x1050",
-    platform: "Windows 7"
-  },
-  port: 4445,
-  deprecationWarnings: false
+var options3 = {
+  browserA: { desiredCapabilities: { browserName: 'chrome' } },
+  browserB: { desiredCapabilities: { browserName: 'chrome' } }
 };
 
 function initCommands(client) {
@@ -108,12 +98,12 @@ function initCommands(client) {
       .pause(pause)
   });
 
-  client.addCommand('signInFO', function (selector, link = URL) {
+  client.addCommand('signInFO', function (selector, link = URL, login = 'pub@prestashop.com', password = '123456789') {
     return client
       .url('http://' + link)
       .waitForExistAndClick(selector.sign_in_button)
-      .waitAndSetValue(selector.login_input, 'pub@prestashop.com')
-      .waitAndSetValue(selector.password_inputFO, '123456789')
+      .waitAndSetValue(selector.login_input, login)
+      .waitAndSetValue(selector.password_inputFO, password)
       .waitForExistAndClick(selector.login_button)
       .waitForExistAndClick(selector.logo_home_page)
   });
@@ -145,6 +135,14 @@ function initCommands(client) {
 }
 
 module.exports = {
+  getMultiClient:function(){
+    client = webdriverio.multiremote(options3);
+    client.browserA = client.select('browserA');
+    client.browserB = client.select('browserB');
+    initCommands(client.browserA);
+    initCommands(client.browserB);
+    return client;
+  },
   getClient: function () {
     if (client) {
       return client;

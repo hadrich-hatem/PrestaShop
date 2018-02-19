@@ -1,5 +1,6 @@
 const {getClient} = require('../common.webdriverio.js');
-const {selector} = require('../globals.webdriverio.js');
+const {getMultiClient} = require('../common.webdriverio.js');
+const {languageFO} = require('../selectors/FO/index');
 var path = require('path');
 var fs = require('fs');
 var pdfUtil = require('pdf-to-text');
@@ -7,8 +8,12 @@ var pdfUtil = require('pdf-to-text');
 global.tab = [];
 
 class CommonClient {
-  constructor() {
-    this.client = getClient();
+  constructor(multiremote = false) {
+    if(multiremote) {
+      this.client = getMultiClient();
+    } else {
+      this.client = getClient();
+    }
   }
 
   signInBO(selector, link, login, password) {
@@ -19,8 +24,8 @@ class CommonClient {
     return this.client.signOutBO();
   }
 
-  signInFO(selector, link) {
-    return this.client.signInFO(selector, link);
+  signInFO(selector, link, login, password) {
+    return this.client.signInFO(selector, link, login, password);
   }
 
   signOutFO(selector) {
@@ -77,12 +82,12 @@ class CommonClient {
   changeLanguage(language) {
     if (language === "francais") {
       return this.client
-        .waitForExistAndClick(selector.languageFO.language_selector)
-        .waitForVisibleAndClick(selector.languageFO.language_FR)
+        .waitForExistAndClick(languageFO.language_selector)
+        .waitForVisibleAndClick(languageFO.language_FR)
     } else {
       return this.client
-        .waitForExistAndClick(selector.languageFO.language_selector)
-        .waitForVisibleAndClick(selector.languageFO.language_EN)
+        .waitForExistAndClick(languageFO.language_selector)
+        .waitForVisibleAndClick(languageFO.language_EN)
     }
   }
 
