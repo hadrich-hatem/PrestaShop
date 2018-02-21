@@ -32,6 +32,11 @@ var options2 = {
   deprecationWarnings: false
 };
 
+var options3 = {
+  browserA: { desiredCapabilities: { browserName: 'chrome' } },
+  browserB: { desiredCapabilities: { browserName: 'chrome' } }
+};
+
 function initCommands(client) {
 
   client.addCommand('linkAccess', function (link) {
@@ -108,12 +113,12 @@ function initCommands(client) {
       .pause(pause)
   });
 
-  client.addCommand('signInFO', function (selector, link = URL) {
+  client.addCommand('signInFO', function (selector, link = URL, login = 'pub@prestashop.com', password = '123456789') {
     return client
       .url('http://' + link)
       .waitForExistAndClick(selector.sign_in_button)
-      .waitAndSetValue(selector.login_input, 'pub@prestashop.com')
-      .waitAndSetValue(selector.password_inputFO, '123456789')
+      .waitAndSetValue(selector.login_input, login)
+      .waitAndSetValue(selector.password_inputFO, password)
       .waitForExistAndClick(selector.login_button)
       .waitForExistAndClick(selector.logo_home_page)
   });
@@ -145,7 +150,7 @@ function initCommands(client) {
 }
 
 module.exports = {
-  getClient: function () {
+  getClient: function (multiremote = false) {
     if (client) {
       return client;
     } else {
@@ -157,8 +162,16 @@ module.exports = {
           }
         }
       }
-      client = webdriverio.remote(options);
-      initCommands(client);
+      if (multiremote) {
+        client = webdriverio.multiremote(options3);
+        client.browserA = client.select('browserA');
+        client.browserB = client.select('browserB');
+        initCommands(client.browserA);
+        initCommands(client.browserB);
+      } else {
+        client = webdriverio.remote(options);
+        initCommands(client);
+      }
       return client;
     }
   },

@@ -7,8 +7,12 @@ var pdfUtil = require('pdf-to-text');
 global.tab = [];
 
 class CommonClient {
-  constructor() {
-    this.client = getClient();
+  constructor(multiremote = false) {
+    if(multiremote) {
+      this.client = getClient(multiremote);
+    } else {
+      this.client = getClient();
+    }
   }
 
   signInBO(selector, link, login, password) {
@@ -19,8 +23,8 @@ class CommonClient {
     return this.client.signOutBO();
   }
 
-  signInFO(selector, link) {
-    return this.client.signInFO(selector, link);
+  signInFO(selector, link, login, password) {
+    return this.client.signInFO(selector, link, login, password);
   }
 
   signOutFO(selector) {
