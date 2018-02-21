@@ -1,5 +1,4 @@
 const {getClient} = require('../common.webdriverio.js');
-const {getMultiClient} = require('../common.webdriverio.js');
 const {languageFO} = require('../selectors/FO/index');
 var path = require('path');
 var fs = require('fs');
@@ -10,7 +9,7 @@ global.tab = [];
 class CommonClient {
   constructor(multiremote = false) {
     if(multiremote) {
-      this.client = getMultiClient();
+      this.client = getClient(multiremote);
     } else {
       this.client = getClient();
     }
@@ -80,7 +79,7 @@ class CommonClient {
   }
 
   changeLanguage(language) {
-    if (language === "francais") {
+    if (language === "french") {
       return this.client
         .waitForExistAndClick(languageFO.language_selector)
         .waitForVisibleAndClick(languageFO.language_FR)

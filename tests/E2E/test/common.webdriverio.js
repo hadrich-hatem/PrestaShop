@@ -135,15 +135,7 @@ function initCommands(client) {
 }
 
 module.exports = {
-  getMultiClient:function(){
-    client = webdriverio.multiremote(options3);
-    client.browserA = client.select('browserA');
-    client.browserB = client.select('browserB');
-    initCommands(client.browserA);
-    initCommands(client.browserB);
-    return client;
-  },
-  getClient: function () {
+  getClient: function (multiremote = false) {
     if (client) {
       return client;
     } else {
@@ -155,8 +147,16 @@ module.exports = {
           }
         }
       }
-      client = webdriverio.remote(options);
-      initCommands(client);
+      if (multiremote) {
+        client = webdriverio.multiremote(options3);
+        client.browserA = client.select('browserA');
+        client.browserB = client.select('browserB');
+        initCommands(client.browserA);
+        initCommands(client.browserB);
+      } else {
+        client = webdriverio.remote(options);
+        initCommands(client);
+      }
       return client;
     }
   },
