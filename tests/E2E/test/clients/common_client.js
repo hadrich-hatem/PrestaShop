@@ -316,7 +316,7 @@ class CommonClient {
       .then((isVisible) => expect(isVisible).to.be.false)
   }
 
-  editObjectData(object) {
+  editObjectData(object, type = '') {
     for (let key in object) {
       if (object.hasOwnProperty(key) && key !== 'type') {
         if (typeof object[key] === 'string') {
@@ -327,11 +327,20 @@ class CommonClient {
           this.editObjectData(object[key]);
         }
       }
+      if (type !== '') {
+        object['type'] = type;
+      }
     }
   }
 
   deleteObjectElement(object, pos) {
     delete object[pos];
+  }
+
+  isSelected(selector) {
+    return this.client
+      .isSelected(selector)
+      .then((isSelected) => expect(isSelected).to.be.true)
   }
 }
 

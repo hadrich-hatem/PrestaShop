@@ -12,7 +12,7 @@ module.exports = {
       search_button:'//*[@id="submitFilterButtonspecific_price_rule"]',
       dropdown_button:'(//*[@id="form-specific_price_rule"]//button[contains(@data-toggle,"dropdown")])[1]',
       delete_button:'//*[@id="form-specific_price_rule"]//a[contains(@class,"delete")]',
-      success_delete_message:'(//div[contains(@class,"alert-success")])[1]'
+      edit_button: '//*[@id="table-specific_price_rule"]//a[@title="Edit"]'
     }
   }
 };

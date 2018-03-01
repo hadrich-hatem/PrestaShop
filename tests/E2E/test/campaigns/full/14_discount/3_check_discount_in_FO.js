@@ -25,7 +25,8 @@ let productData = {
 let catalogPriceRule = {
   name: 'discount',
   type: "percentage",
-  reduction: '19.666666'
+  reduction: '19.666666',
+  quantity: 1
 };
 
 /**
@@ -64,18 +65,18 @@ scenario('Check "Specific price"', () => {
   }, 'product/product');
 }, 'product/product', true);
 
-scenario('Create "Catalog price rule"', () => {
+scenario('Create "Catalog price rule" in the Back Office', () => {
   scenario('Login in the Back Office', client => {
     test('should open the browser', () => client.open());
     test('should login successfully in the Back Office', () => client.signInBO(AccessPageBO));
   }, 'common_client');
-  common_scenarios.createCatalogPriceRules(catalogPriceRule["name"] + date_time, catalogPriceRule["type"], catalogPriceRule["reduction"]);
+  common_scenarios.createCatalogPriceRule(catalogPriceRule);
   scenario('Logout from the Back Office', client => {
     test('should logout successfully from the Back Office', () => client.signOutBO());
   }, 'common_client');
 }, 'common_client', true);
 
-scenario('Check "Catalog price rule"', () => {
+scenario('Check "Catalog price rule" in the Front Office', () => {
   scenario('Login in the Front Office', client => {
     test('should open the browser', () => client.open());
     test('should login successfully in the Front Office', () => client.signInFO(AccessPageFO));
@@ -94,12 +95,12 @@ scenario('Check "Catalog price rule"', () => {
   }, 'common_client');
 }, 'common_client', true);
 
-scenario('Delete "Catalog price rule"', () => {
+scenario('Delete "Catalog price rule" in the Back Office', () => {
   scenario('Login in the Back Office', client => {
     test('should open the browser', () => client.open());
     test('should login successfully in the Back Office', () => client.signInBO(AccessPageBO));
   }, 'common_client');
-  common_scenarios.deleteCatalogPriceRules(catalogPriceRule["name"] + date_time);
+  common_scenarios.deleteCatalogPriceRule(catalogPriceRule);
   scenario('Logout from the Back Office', client => {
     test('should logout successfully from the Back Office', () => client.signOutBO());
   }, 'common_client');

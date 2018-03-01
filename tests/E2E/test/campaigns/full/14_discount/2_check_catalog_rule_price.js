@@ -7,7 +7,8 @@ const common_scenarios = require('../../common_scenarios/discount');
 var catalogPriceRule = [{
   name: 'Catalog_price_1',
   type: "percentage",
-  reduction: '18'
+  reduction: '18',
+  quantity: '1'
 }, {
   name: 'Catalog_price_2',
   type: "percentage",
@@ -20,15 +21,15 @@ var catalogPriceRule = [{
  * http://forge.prestashop.com/browse/BOOM-3843
  **/
 
-scenario('Check double catalog price rules', client => {
+scenario('Check double catalog price rules in the Back Office', () => {
 
-  scenario('Open the browser and connect to the BO', client => {
+  scenario('Open the browser and connect to the Back Office', client => {
     test('should open the browser', () => client.open());
-    test('should log in successfully in BO', () => client.signInBO(AccessPageBO));
+    test('should log in successfully in the Back Office', () => client.signInBO(AccessPageBO));
   }, 'common_client');
 
-  common_scenarios.createCatalogPriceRules(catalogPriceRule[0].name, catalogPriceRule[0].type, catalogPriceRule[0].reduction);
-  common_scenarios.createCatalogPriceRules(catalogPriceRule[1].name, catalogPriceRule[1].type, catalogPriceRule[1].reduction, catalogPriceRule[1].quantity);
+  common_scenarios.createCatalogPriceRule(catalogPriceRule[0]);
+  common_scenarios.createCatalogPriceRule(catalogPriceRule[1]);
 
   scenario('logout successfully from the Back Office', client => {
     test('should logout successfully from the Back Office', () => client.signOutBO());
@@ -52,12 +53,12 @@ scenario('Check double catalog price rules', client => {
     test('should logout successfully from the Front Office', () => client.signOutFO(AccessPageFO));
   }, 'common_client');
 
-  scenario('Open the browser and connect to the BO', client => {
-    test('should log in successfully in BO', () => client.signInBO(AccessPageBO));
+  scenario('Open the browser and connect to the Back Office', client => {
+    test('should log in successfully in the Back Office', () => client.signInBO(AccessPageBO));
   }, 'common_client');
 
-  common_scenarios.deleteCatalogPriceRules(catalogPriceRule[0].name);
-  common_scenarios.deleteCatalogPriceRules(catalogPriceRule[1].name);
+  common_scenarios.deleteCatalogPriceRule(catalogPriceRule[0]);
+  common_scenarios.deleteCatalogPriceRule(catalogPriceRule[1]);
 
   scenario('logout successfully from the Back Office', client => {
     test('should logout successfully from the Back Office', () => client.signOutBO());
