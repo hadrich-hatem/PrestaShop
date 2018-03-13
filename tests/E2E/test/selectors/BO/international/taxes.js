@@ -1,6 +1,6 @@
 module.exports = {
   Taxes:{
-    taxes: {
+    Taxes: {
       add_new_tax_button: '//*[@id="page-header-desc-tax-new_tax"]',
       name_input: '//*[@id="name_1"]',
       rate_input: '//*[@id="rate"]',
@@ -10,7 +10,9 @@ module.exports = {
       filter_search_button: '//*[@id="submitFilterButtontax"]',
       edit_button: '//*[@id="table-tax"]//a[@title="Edit"]',
       dropdown_button: '//*[@id="table-tax"]/tbody//button[@data-toggle="dropdown"]',
-      delete_button: '//*[@id="table-tax"]/tbody//a[@title="Delete"]'
+      delete_button: '//*[@id="table-tax"]/tbody//a[@title="Delete"]',
+      bulk_action_button: '//*[@id="bulk_action_menu_tax"]',
+      action_group_button: '(//*[@id="form-tax"]//div[contains(@class, "bulk-actions")]//a)[%ID]'
     },
     taxRules: {
       add_new_tax_rules_group_button: '//*[@id="page-header-desc-tax_rules_group-new_tax_rules_group"]',

@@ -1,21 +1,23 @@
 const {AccessPageBO} = require('../../../../selectors/BO/access_page');
-const common_scenarios = require('./taxes');
+const common_scenarios = require('../../../common_scenarios/taxes');
 
 let taxData = {
   name: 'TVA 5%',
   rate: 5
 };
 
-scenario('Create, edit, delete and check "Tax rules" in the Back Office', () => {
-  scenario('Open the browser and connect to the BO', client => {
+scenario('Create, edit, delete and check "Tax" in the Back Office', () => {
+  scenario('Open the browser and connect to the Back Office', client => {
     test('should open the browser', () => client.open());
-    test('should log in successfully in BO', () => client.signInBO(AccessPageBO));
+    test('should log in successfully in the Back Office', () => client.signInBO(AccessPageBO));
   }, 'common_client');
-  common_scenarios.createTax(taxData.name + date_time, taxData.rate);
-  common_scenarios.checkTax(taxData.name + date_time, taxData.rate);
-  common_scenarios.editTax(taxData.name + date_time, taxData.name + date_time + 'update', taxData.rate + 10);
-  common_scenarios.checkTax(taxData.name + date_time + 'update', taxData.rate + 10);
-  common_scenarios.deleteTax(taxData.name + date_time + 'update');
+  common_scenarios.createTax(taxData);
+  common_scenarios.checkTax(taxData);
+  common_scenarios.editTax(taxData);
+  common_scenarios.checkTax(taxData);
+  common_scenarios.deleteTax(taxData);
+  common_scenarios.createTax(JSON.parse(JSON.stringify(taxData)));
+  common_scenarios.deleteTaxWithBulkAction(taxData.name);
   scenario('Logout from the Back Office', client => {
     test('should logout successfully from the Back Office', () => client.signOutBO());
   }, 'common_client');
