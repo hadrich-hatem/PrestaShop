@@ -1,5 +1,4 @@
 var CommonClient = require('./common_client');
-const {DiscountSubMenu} = require('../selectors/BO/catalogpage/discount_submenu');
 
 class Discount extends CommonClient {
 
@@ -8,8 +7,6 @@ class Discount extends CommonClient {
       return this.client
         .waitAndSetValue(inputSelector, name)
         .waitForExistAndClick(buttonSelector)
-    } else {
-      return this.client.pause(1000)
     }
   }
 }

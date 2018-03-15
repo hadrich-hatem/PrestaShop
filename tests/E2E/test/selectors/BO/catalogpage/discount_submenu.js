@@ -1,6 +1,6 @@
 module.exports = {
   DiscountSubMenu: {
-    catalogPriceRules: {
+    CatalogPriceRules: {
       catalog_price_rules_subtab: '//*[@id="content"]//a[text()="Catalog Price Rules"]',
       new_catalog_price_rules_button: '//*[@id="page-header-desc-specific_price_rule-new_specific_price_rule"]',
       name_input: '//*[@id="name"]',
