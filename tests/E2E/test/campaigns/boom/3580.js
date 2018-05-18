@@ -54,7 +54,7 @@ scenario('Create "Product"', () => {
     test('should go to "Catalog" page', () => client.goToSubtabMenuPage(Menu.Sell.Catalog.catalog_menu, Menu.Sell.Catalog.products_submenu));
     test('should click on "New Product" button', () => client.waitForExistAndClick(AddProductPage.new_product_button));
     test('should set the "Name" input', () => client.waitAndSetValue(AddProductPage.product_name_input, productData.name + date_time));
-    test('should set the "Reference"', () => client.waitAndSetValue(AddProductPage.product_reference, productData.reference));
+    test('should set the "Reference" input', () => client.waitAndSetValue(AddProductPage.product_reference_input, productData.reference));
     test('should set the "Quantity" input', () => client.waitAndSetValue(AddProductPage.quantity_shortcut_input, productData.quantity));
     test('should set the "Price" input', () => client.setPrice(AddProductPage.priceTE_shortcut, productData.price));
     test('should upload the first product picture', () => client.uploadPicture(productData.image_name, AddProductPage.picture));
@@ -64,7 +64,7 @@ scenario('Create "Product"', () => {
         return promise
           .then(() => client.waitForExistAndClick(AddProductPage.pricing_tax_rule_select))
           .then(() => client.waitAndSetValue(AddProductPage.pricing_tax_rule_input, taxData.name + date_time))
-          .then(() => client.waitForExistAndClick(AddProductPage.pricing_tax_rule_option));
+          .then(() => client.waitForExistAndClick(AddProductPage.pricing_tax_rule_option.replace('%T', '23%')));
       });
       test('should click on "Add specific price" button', () => client.scrollWaitForExistAndClick(AddProductPage.pricing_add_specific_price_button));
       test('should set the "Starting at" input', () => client.waitAndSetValue(AddProductPage.specific_price_starting_at_input, productData.pricing[0].starting_at, 3000));

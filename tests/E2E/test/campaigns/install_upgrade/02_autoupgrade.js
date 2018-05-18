@@ -42,7 +42,7 @@ scenario('The shop installation', () => {
   }, 'installation');
 
   scenario('Open the browser and connect to the Back Office', client => {
-    test('should log in successfully in BO', () => client.signInBO(AccessPageBO, UrlLastStableVersion));
+    test('should log in successfully in BO', () => client.signInBO(AccessPageBO, false, UrlLastStableVersion));
   }, 'installation');
 
   scenario('Close the onboarding modal ', client => {
@@ -97,7 +97,7 @@ scenario('The shop installation', () => {
   }, 'installation');
 
   scenario('Connect to the Back Office', client => {
-    test('should login successfully in the Back Office', () => client.signInBO(AccessPageBO, UrlLastStableVersion));
+    test('should login successfully in the Back Office', () => client.signInBO(AccessPageBO, false, UrlLastStableVersion));
   }, 'installation');
 
   scenario('Enable shop in the Back Office', client => {

@@ -1,6 +1,7 @@
 module.exports = Object.assign(
   {},
   require('./BO'),
-  require('./FO')
+  require('./FO'),
+  require('./External')
 );
 

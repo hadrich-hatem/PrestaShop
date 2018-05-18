@@ -43,7 +43,7 @@ module.exports = {
       test('should go to "Products" page', () => client.goToSubtabMenuPage(Menu.Sell.Catalog.catalog_menu, Menu.Sell.Catalog.products_submenu));
       test('should click on "New Product" button', () => client.waitForExistAndClick(AddProductPage.new_product_button));
       test('should set the "Name" input', () => client.waitAndSetValue(AddProductPage.product_name_input, productData["name"] + date_time));
-      test('should set the "Reference" input', () => client.waitAndSetValue(AddProductPage.product_reference, productData["reference"]));
+      test('should set the "Reference" input', () => client.waitAndSetValue(AddProductPage.product_reference_input, productData["reference"]));
       test('should set the "Quantity" input', () => client.waitAndSetValue(AddProductPage.quantity_shortcut_input, productData["quantity"]));
       test('should set the "Price" input', () => client.setPrice(AddProductPage.priceTE_shortcut, productData["price"]));
       test('should upload the first product picture', () => client.uploadPicture(productData["image_name"], AddProductPage.picture));
@@ -58,7 +58,7 @@ module.exports = {
       if (productData.hasOwnProperty('attribute')) {
         scenario('Add Attribute', client => {
           test('should select the "Product with combination" radio button', () => client.scrollWaitForExistAndClick(AddProductPage.variations_type_button));
-          test('should go to "Combinations" tab', () => client.scrollWaitForExistAndClick(AddProductPage.variations_tab));
+          test('should go to "Combinations" tab', () => client.scrollWaitForExistAndClick(AddProductPage.product_combinations_tab));
           test('should select the variation', () => {
             if (productData.type === 'combination') {
               return promise
@@ -84,7 +84,7 @@ module.exports = {
         scenario('Add Feature', client => {
           test('should click on "Add feature" button', () => {
             return promise
-              .then(() => client.scrollTo(AddProductPage.product_create_category_btn))
+              .then(() => client.scrollTo(AddProductPage.create_category_button))
               .then(() => client.waitForExistAndClick(AddProductPage.add_feature_to_product_button));
           });
           test('should select the created feature', () => client.selectFeature(AddProductPage, productData['feature']['name'] + date_time, productData['feature']['value']));

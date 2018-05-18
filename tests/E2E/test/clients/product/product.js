@@ -36,20 +36,14 @@ class Product extends CommonClient {
     return this.client
       .scrollTo(AddProductPage.catalog_home, 50)
       .waitForExistAndClick(AddProductPage.catalog_home)
-      .waitForExistAndClick(AddProductPage.catalog_first_element_radio)
-      .waitForExistAndClick(AddProductPage.catalog_second_element_radio);
-  }
-
-  associatedFile() {
-    return this.client
-      .waitForExistAndClick(AddProductPage.virtual_associated_file)
-      .pause(2000);
+      .waitForExistAndClick(AddProductPage.catalog_element_radio.replace('%I', 1))
+      .waitForExistAndClick(AddProductPage.catalog_element_radio.replace('%I', 1));
   }
 
   availability() {
     return this.client
-      .scrollTo(AddProductPage.pack_label_out_stock, 50)
-      .waitAndSetValue(AddProductPage.pack_label_out_stock, data.common.qty_msg_unstock);
+      .scrollTo(AddProductPage.label_out_stock_input, 50)
+      .waitAndSetValue(AddProductPage.label_out_stock_input, data.common.qty_msg_unstock);
   }
 
   selectPricingPriorities() {
@@ -83,8 +77,8 @@ class Product extends CommonClient {
 
   createCategory() {
     return this.client
-      .scrollTo(AddProductPage.category_create_btn, 50)
-      .waitForExistAndClick(AddProductPage.category_create_btn)
+      .scrollTo(AddProductPage.category_save_button, 50)
+      .waitForExistAndClick(AddProductPage.category_save_button)
       .pause(4000);
 
   }
@@ -108,8 +102,8 @@ class Product extends CommonClient {
       .scrollTo(AddProductPage.product_add_feature_btn, 150)
       .waitForExistAndClick(AddProductPage.product_add_feature_btn)
       .waitForExistAndClick(AddProductPage.feature_select_button)
-      .waitForExistAndClick(AddProductPage.feature_select_option_height)
-      .waitAndSetValue(AddProductPage.feature_custom_value_height, data.standard.features.feature1.custom_value);
+      .waitForExistAndClick(AddProductPage.feature_select_option.replace('%ID', 0).replace('%V', "Height"))
+      .waitAndSetValue(AddProductPage.feature_custom_value.replace('%ID', 0), data.standard.features.feature1.custom_value);
   }
 
   setPrice(selector, price) {
@@ -128,11 +122,11 @@ class Product extends CommonClient {
 
   selectFeature(addProductPage, name, value) {
     return this.client
-      .scrollWaitForExistAndClick(addProductPage.feature_select)
+      .scrollWaitForExistAndClick(addProductPage.feature_select.replace('%ID', 0))
       .waitAndSetValue(addProductPage.select_feature_created, name)
       .waitForExistAndClick(addProductPage.result_feature_select.replace('%ID', 0))
       .pause(2000)
-      .selectByVisibleText(addProductPage.feature_value_select, value);
+      .selectByVisibleText(addProductPage.feature_value_select.replace('%ID', 0), value);
   }
 
   clickNextOrPrevious(selector) {

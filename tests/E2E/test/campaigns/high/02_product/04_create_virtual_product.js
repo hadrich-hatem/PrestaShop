@@ -21,16 +21,20 @@ scenario('Create virtual Product in the Back Office', client => {
     test('should select the "virtual product"', () => client.waitAndSelectByValue(AddProductPage.product_type, 2));
     test('should set the "Quantity" of product', () => client.waitAndSetValue(AddProductPage.quantity_shortcut_input, "10"));
     test('should upload the first product picture', () => client.uploadPicture('image_test.jpg', AddProductPage.picture));
-    test('should click on "CREATE A CATEGORY"', () => client.scrollWaitForExistAndClick(AddProductPage.product_create_category_btn, 50));
+    test('should click on "CREATE A CATEGORY" button', () => client.scrollWaitForExistAndClick(AddProductPage.create_category_button, 50));
     test('should set the "New category name"', () => client.waitAndSetValue(AddProductPage.product_category_name_input, data.virtual.new_category_name + date_time));
-    test('should click on "Create"', () => client.createCategory());
+    test('should click on "Create" button', () => {
+      return promise
+        .then(() => client.scrollWaitForExistAndClick(AddProductPage.category_save_button, 50))
+        .then(() => client.pause(4000));
+    });
     test('should open all categories', () => client.openAllCategories());
     test('should choose the created category as default', () => {
       return promise
         .then(() => client.waitForVisible(AddProductPage.created_category))
         .then(() => client.waitForExistAndClick(AddProductPage.home_delete_button));
     });
-    test('should click on "ADD A BRAND"', () => client.scrollWaitForExistAndClick(AddProductPage.product_add_brand_btn, 50));
+    test('should click on "ADD A BRAND" button', () => client.scrollWaitForExistAndClick(AddProductPage.add_brand_button, 50));
     test('should select brand', () => {
       return promise
         .then(() => client.waitForExistAndClick(AddProductPage.product_brand_select))
@@ -40,7 +44,7 @@ scenario('Create virtual Product in the Back Office', client => {
     test('should search and add a related product', () => client.searchAndAddRelatedProduct());
     test('should click on "ADD A FEATURE" and select one', () => client.addFeatureHeight('virtual'));
     test('should set the "Tax exclude" price', () => client.setPrice(AddProductPage.priceTE_shortcut, data.common.priceTE));
-    test('should set the "Reference"', () => client.waitAndSetValue(AddProductPage.product_reference, data.common.product_reference));
+    test('should set the "Reference" input', () => client.waitAndSetValue(AddProductPage.product_reference_input, data.common.product_reference));
     test('should switch the product online', () =>  {
       return promise
         .then(() => client.isVisible(AddProductPage.symfony_toolbar))
@@ -56,18 +60,22 @@ scenario('Create virtual Product in the Back Office', client => {
   scenario('Edit product quantities', client => {
     test('should click on "Quantities"', () => client.scrollWaitForExistAndClick(AddProductPage.product_quantities_tab, 50));
     test('should set the "Quantity"', () => client.waitAndSetValue(AddProductPage.product_quantity_input, data.common.quantity));
-    test('should set the "Minimum quantity for sale"', () => client.waitAndSetValue(AddProductPage.minimum_quantity_sale, data.common.qty_min));
-    test('should indicate that the product have an associated file', () => client.associatedFile());
+    test('should set the "Minimum quantity for sale" input', () => client.waitAndSetValue(AddProductPage.minimum_quantity_sale_input, data.common.qty_min));
+    test('should indicate that the product have an associated file', () => {
+      return promise
+        .then(() => client.waitForExistAndClick(AddProductPage.virtual_associated_file))
+        .then(() => client.pause(2000));
+    });
     test('should add a file', () => client.addFile(AddProductPage.options_select_file, 'image_test.jpg'), 50);
     test('should add file "NAME"', () => client.waitAndSetValue(AddProductPage.virtual_file_name, data.virtual.attached_file_name));
     test('should add file "NUMBER"', () => client.waitAndSetValue(AddProductPage.virtual_file_number_download, data.virtual.allowed_number_to_download));
     test('should add file "EXPIRATION DATE"', () => client.waitAndSetValue(AddProductPage.virtual_expiration_file_date, data.virtual.expiration_date));
     test('should add file "DAYS NUMBER"', () => client.waitAndSetValue(AddProductPage.virtual_number_days, data.virtual.number_of_days));
     test('should save attached file', () => client.scrollWaitForExistAndClick(AddProductPage.virtual_save_attached_file));
-    test('should click on "Deny orders"', () => client.scrollWaitForExistAndClick(AddProductPage.pack_availability_preferences, 50));
-    test('should set the "label when in stock"', () => client.waitAndSetValue(AddProductPage.pack_label_in_stock, data.common.qty_msg_stock));
+    test('should click on "Deny orders"', () => client.scrollWaitForExistAndClick(AddProductPage.availability_preferences_radio_button.replace('%I', 0), 50));
+    test('should set the "label when in stock"', () => client.waitAndSetValue(AddProductPage.label_in_stock_input, data.common.qty_msg_stock));
     test('should set the "Label when out of stock (and back order allowed)"', () => client.availability());
-    test('should set the "Availability date"', () => client.waitAndSetValue(AddProductPage.pack_availability_date, data.common.qty_date));
+    test('should set the "Availability date"', () => client.waitAndSetValue(AddProductPage.availability_date_input, data.common.qty_date));
   }, 'product/product');
 
   scenario('Edit product pricing', client => {
@@ -144,8 +152,8 @@ scenario('Check the virtual product in the Front Office', () => {
     test('should check that the "description" is equal to "' + data.common.description + '"', () => client.checkTextValue(productPage.product_description, data.common.description));
     test('should check that the product reference is equal to "' + data.common.product_reference + '"', () => {
       return promise
-        .then(() => client.waitForExistAndClick(productPage.product_detail_tab, 2000))
-        .then(() => client.scrollTo(productPage.product_detail_tab, 180))
+        .then(() => client.waitForExistAndClick(productPage.product_tab_list.replace('%I', 2), 2000))
+        .then(() => client.scrollTo(productPage.product_tab_list.replace('%I', 2), 180))
         .then(() => client.pause(2000))
         .then(() => client.checkTextValue(productPage.product_reference, data.common.product_reference));
     });

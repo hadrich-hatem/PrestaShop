@@ -21,7 +21,7 @@ scenario('The shop installation', () => {
 
   scenario('Open the browser and connect to the Back Office', client => {
     test('should open the browser', () => client.open());
-    test('should login successfully in the Back Office', () => client.signInBO(AccessPageBO, UrlLastStableVersion));
+    test('should login successfully in the Back Office', () => client.signInBO(AccessPageBO, false, UrlLastStableVersion));
   }, 'installation');
 
   scenario('Rollback to the old version ', client => {
@@ -43,7 +43,7 @@ scenario('The shop installation', () => {
   }, 'installation');
 
   scenario('Connect to the Back Office', client => {
-    test('should login successfully in the Back Office', () => client.signInBO(AccessPageBO, UrlLastStableVersion));
+    test('should login successfully in the Back Office', () => client.signInBO(AccessPageBO, false, UrlLastStableVersion));
   }, 'installation');
 
   scenario('Enable shop in the Back Office', client => {

@@ -73,12 +73,15 @@ function initCommands(client) {
       .selectByVisibleText(selector, value);
   });
 
-  client.addCommand('signInBO', function (selector, link = global.URL, login = global.adminEmail, password = global.adminPassword) {
+  client.addCommand('signInBO', function (selector, stayLoggedIn = false, link = global.URL, login = global.adminEmail, password = global.adminPassword) {
     this.selector = globals.selector;
     return client
       .url(link + '/admin-dev')
       .waitAndSetValue(selector.login_input, login)
       .waitAndSetValue(selector.password_inputBO, password)
+      .then(() => {
+        stayLoggedIn ? client.waitForExistAndClick(selector.stay_logged_in_checkbox) : client.pause(1000)
+      })
       .waitForExistAndClick(selector.login_buttonBO)
       .waitForExist(selector.menuBO, 120000);
   });

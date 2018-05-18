@@ -19,20 +19,23 @@ scenario('Create product with combination in the Back Office', client => {
     test('should set the "Summary" text', () => client.setEditorText(AddProductPage.summary_textarea, data.common.summary));
     test('should click on "Description" tab', () => client.waitForExistAndClick(AddProductPage.tab_description));
     test('should set the "Description" text', () => client.setEditorText(AddProductPage.description_textarea, data.common.description));
-    test('should set the "product name"', () => client.waitAndSetValue(AddProductPage.product_name_input, data.standard.name + 'C' + date_time));
-    test('should select the "Product with combination" option', () => client.waitForExistAndClick(AddProductPage.product_combinations));
+    test('should select the "Product with combinations"', () => client.waitForExistAndClick(AddProductPage.product_combinations.replace('%I', 2)));
     test('should upload the first product picture', () => client.uploadPicture('1.png', AddProductPage.picture));
     test('should upload the second product picture', () => client.uploadPicture('2.jpg', AddProductPage.picture));
-    test('should click on "CREATE A CATEGORY"', () => client.scrollWaitForExistAndClick(AddProductPage.product_create_category_btn, 50));
+    test('should click on "CREATE A CATEGORY" button', () => client.scrollWaitForExistAndClick(AddProductPage.create_category_button, 50));
     test('should set the "New category name"', () => client.waitAndSetValue(AddProductPage.product_category_name_input, data.standard.new_category_name + 'C' + date_time));
-    test('should click on "Create"', () => client.createCategory());
+    test('should click on "Create" button', () => {
+      return promise
+        .then(() => client.scrollWaitForExistAndClick(AddProductPage.category_save_button, 50))
+        .then(() => client.pause(4000));
+    });
     test('should open all categories', () => client.openAllCategories());
     test('should choose the created category as default', () => {
       return promise
         .then(() => client.waitForVisible(AddProductPage.created_category))
         .then(() => client.waitForExistAndClick(AddProductPage.home_delete_button));
     });
-    test('should click on "ADD A BRAND" button', () => client.scrollWaitForExistAndClick(AddProductPage.product_add_brand_btn, 50));
+    test('should click on "ADD A BRAND" button', () => client.scrollWaitForExistAndClick(AddProductPage.add_brand_button, 50));
     test('should select brand', () => {
       return promise
         .then(() => client.waitForExistAndClick(AddProductPage.product_brand_select))
@@ -42,8 +45,8 @@ scenario('Create product with combination in the Back Office', client => {
     test('should search and add a related product', () => client.searchAndAddRelatedProduct());
     test('should click on "ADD A FEATURE" and select one', () => client.addFeatureHeight('combination'));
     test('should set "Tax exclude" price', () => client.setPrice(AddProductPage.priceTE_shortcut, data.common.priceTE));
-    test('should set the "Reference" input', () => client.waitAndSetValue(AddProductPage.product_reference, data.common.product_reference));
-    test('should switch the product online', () => {
+    test('should set the "Reference" input', () => client.waitAndSetValue(AddProductPage.product_reference_input, data.common.product_reference));
+    test('should switch the product online', () =>  {
       return promise
         .then(() => client.isVisible(AddProductPage.symfony_toolbar))
         .then(() => {
@@ -62,7 +65,7 @@ scenario('Create product with combination in the Back Office', client => {
     test('should set the "Depth" input', () => client.waitAndSetValue(AddProductPage.shipping_depth, data.common.cdepth));
     test('should set the "Weight" input', () => client.waitAndSetValue(AddProductPage.shipping_weight, data.common.cweight));
     test('should set the "Does this product incur additional shipping costs?" input', () => client.waitAndSetValue(AddProductPage.shipping_fees, data.common.cadd_ship_coast));
-    test('should click on "My carrier (Delivery next day!)" button', () => client.scrollWaitForExistAndClick(AddProductPage.shipping_available_carriers, 50));
+    test('should click on "My carrier (Delivery next day!)" button', () => client.scrollWaitForExistAndClick(AddProductPage.shipping_available_carriers.replace('%I', 1), 50));
   }, 'product/product');
 
   scenario('Create product combinations', client => {
@@ -133,9 +136,9 @@ scenario('Create product with combination in the Back Office', client => {
     test('should check that combination\'s picture is well updated (BOOM-4469)', () => client.checkAttributeValue(AddProductPage.combination_attribute_image.replace('%NUMBER', combinationId), 'src', title_image, 'contain'));
     /**** END ****/
     test('should go back to combination list', () => client.backToProduct());
-    test('should click on "Availability preferences" button', () => client.scrollWaitForExistAndClick(AddProductPage.combination_availability_preferences, 50));
-    test('should set the available label in stock', () => client.waitAndSetValue(AddProductPage.combination_label_in_stock, data.common.qty_msg_stock));
-    test('should set the available label out of stock', () => client.waitAndSetValue(AddProductPage.combination_label_out_stock, data.common.qty_msg_unstock));
+    test('should click on "Availability preferences" button', () => client.scrollWaitForExistAndClick(AddProductPage.availability_preferences_radio_button.replace('%I', '0'), 50));
+    test('should set the available label in stock', () => client.waitAndSetValue(AddProductPage.label_in_stock_input, data.common.qty_msg_stock));
+    test('should set the available label out of stock', () => client.waitAndSetValue(AddProductPage.label_out_stock_input, data.common.qty_msg_unstock));
   }, 'product/create_combinations');
 
   scenario('Edit product pricing', client => {
@@ -216,8 +219,8 @@ scenario('Check the product with combination in the Front Office', () => {
     test('should check that the "description" is equal to "' + data.common.description + '"', () => client.checkTextValue(productPage.product_description, data.common.description));
     test('should check that the product reference is equal to "' + data.common.product_reference + '"', () => {
       return promise
-        .then(() => client.waitForExistAndClick(productPage.product_detail_tab, 2000))
-        .then(() => client.scrollTo(productPage.product_detail_tab, 180))
+        .then(() => client.waitForExistAndClick(productPage.product_tab_list.replace('%I', 2), 2000))
+        .then(() => client.scrollTo(productPage.product_tab_list.replace('%I', 2), 180))
         .then(() => client.pause(2000))
         .then(() => client.checkTextValue(productPage.product_reference, data.common.product_reference));
     });

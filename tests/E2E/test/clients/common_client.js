@@ -3,6 +3,7 @@ const {languageFO} = require('../selectors/FO/index');
 let path = require('path');
 let fs = require('fs');
 let pdfUtil = require('pdf-to-text');
+const exec = require('child_process').exec;
 
 global.tab = [];
 global.isOpen = false;
@@ -13,8 +14,8 @@ class CommonClient {
     this.client = getClient();
   }
 
-  signInBO(selector, link, login, password) {
-    return this.client.signInBO(selector, link, login, password);
+  signInBO(selector, stayLoggedIn, link, login, password) {
+    return this.client.signInBO(selector, stayLoggedIn, link, login, password);
   }
 
   signOutBO() {
@@ -90,7 +91,7 @@ class CommonClient {
       });
   }
 
-  isVisibleWithinViewport(selector){
+  isVisibleWithinViewport(selector) {
     return this.client
       .isVisibleWithinViewport(selector);
   }
@@ -172,8 +173,10 @@ class CommonClient {
     return this.client.waitAndSelectByValue(selector, value, timeout);
   }
 
-  waitAndSelectByVisibleText(selector, value, timeout = 90000) {
-    return this.client.waitAndSelectByVisibleText(selector, value, timeout);
+  waitAndSelectByVisibleText(selector, value, pause = 0, timeout = 90000) {
+    return this.client
+      .pause(pause)
+      .waitAndSelectByVisibleText(selector, value, timeout);
   }
 
   addFile(selector, picture, value = 150) {
@@ -257,6 +260,12 @@ class CommonClient {
           .waitForExist(selector, 90000)
           .then(() => this.client.getAttribute(selector, attribute))
           .then((text) => expect(text).to.not.equal(value));
+      case "least":
+        return this.client
+          .pause(pause)
+          .waitForExist(selector, 90000)
+          .then(() => this.client.getAttribute(selector, attribute))
+          .then((text) => expect(parseInt(text)).to.be.at.least(value));
     }
   }
 
@@ -482,13 +491,6 @@ class CommonClient {
     delete object[pos];
   }
 
-  setAttributeById(selector) {
-    return this.client
-      .execute(function (selector) {
-        document.getElementById(selector).style.display = 'none';
-      }, selector);
-  }
-
   stringifyNumber(number) {
     let special = ['zeroth', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth', 'eleventh', 'twelfth', 'thirteenth', 'fourteenth', 'fifteenth', 'sixteenth', 'seventeenth', 'eighteenth', 'nineteenth'];
     let deca = ['twent', 'thirt', 'fort', 'fift', 'sixt', 'sevent', 'eight', 'ninet'];
@@ -579,6 +581,52 @@ class CommonClient {
       .selectByVisibleText(selector, text)
   }
 
+
+  setEditorFontText(selector, start, end, font) {
+    return this.client
+      .pause(0)
+      .execute(function (start, end, font) {
+        var field = tinyMCE.activeEditor;
+        var range = field.selection.getRng();
+        var body = field.getBody();
+        var textNode = body.getElementsByTagName('p')[0].lastChild;
+        range.setStart(textNode, start);
+        range.setEnd(textNode, end);
+        field.selection.setRng(range);
+        if (font === 'underline') {
+          field.selection.setContent('<span style="text-decoration: ' + font + ';">' + field.selection.getContent() + "</span>");
+        } else {
+          field.selection.setContent("<" + font + ">" + field.selection.getContent() + "</" + font + ">");
+        }
+      }, start, end, font);
+  }
+
+  clickAndOpenOnNewWindow(menuSelector, submenuSelector, id) {
+    return this.client
+      .pause(4000)
+      .scrollWaitForExistAndClick(menuSelector)
+      .waitForVisible(submenuSelector)
+      .middleClick(submenuSelector)
+      .switchWindow(id)
+  }
+
+  setMachineDate(numberOfDay) {
+    var machineDate = new Date();
+    numberOfDay > 0 ? machineDate = machineDate.setDate(machineDate.getDate() + numberOfDay) : machineDate = machineDate.setDate(machineDate.getDate() - numberOfDay);
+    exec('sudo date -s "'+ new Date(machineDate) + '"',
+      (error, stdout, stderr) => {
+        global.error = error;
+      });
+    return this.client
+      .pause(4000)
+      .then(() => {
+        expect(global.error).to.be.a('null');
+      });
+  }
+
+  openURLOnNewWindow(url) {
+    return this.client.newWindow(url);
+  }
 
 }
 

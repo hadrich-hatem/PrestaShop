@@ -29,7 +29,7 @@ scenario('Check the employee creation', client => {
 }, 'common_client');
 
 scenario('Login with the new employee account', client => {
-  test('should login successfully in the Back Office', () => client.signInBO(AccessPageBO, URL, 'demo' + date_time + '@prestashop.com' ,'123456789'));
+  test('should login successfully in the Back Office', () => client.signInBO(AccessPageBO, false, URL, 'demo' + date_time + '@prestashop.com' ,'123456789'));
   test('should go to orders page', () => client.waitForExistAndClick(Employee.orders_page));
   test('should click on "employee info" icon', () => client.waitForExistAndClick(AccessPageBO.info_employee));
   test('should click on "Sign out" icon', () => client.waitForVisibleAndClick(AccessPageBO.sign_out));
