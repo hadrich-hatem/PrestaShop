@@ -6,5 +6,6 @@ module.exports =Object.assign(
   },
   require('./taxes'),
   require('./translations'),
-  require('./localization')
+  require('./localization'),
+  require('./locations')
 );

@@ -1,9 +1,10 @@
 const {getClient} = require('../common.webdriverio.js');
 const {selector} = require('../globals.webdriverio.js');
-const {languageFO} = require('../../test/selectors/FO/index');
+const {languageFO} = require('../selectors/FO/index');
 let path = require('path');
 let fs = require('fs');
 let pdfUtil = require('pdf-to-text');
+const exec = require('child_process').exec;
 
 global.tab = [];
 global.isOpen = false;
@@ -177,8 +178,10 @@ class CommonClient {
       .moveToObject(selector);
   }
 
-  waitAndSelectByValue(selector, value, timeout = 90000) {
-    return this.client.waitAndSelectByValue(selector, value, timeout);
+  waitAndSelectByValue(selector, value, pause = 0, timeout = 90000) {
+    return this.client
+      .pause(pause)
+      .waitAndSelectByValue(selector, value, timeout);
   }
 
   waitAndSelectByVisibleText(selector, value, timeout = 90000) {
@@ -266,6 +269,12 @@ class CommonClient {
           .waitForExist(selector, 90000)
           .then(() => this.client.getAttribute(selector, attribute))
           .then((text) => expect(text).to.not.equal(value));
+      case "least":
+        return this.client
+          .pause(pause)
+          .waitForExist(selector, 90000)
+          .then(() => this.client.getAttribute(selector, attribute))
+          .then((text) => expect(parseInt(text)).to.be.at.least(value));
     }
   }
 
@@ -590,6 +599,38 @@ class CommonClient {
       return this.client
         .middleClick(selector)
     }
+  }
+
+  clickAndOpenOnNewWindow(menuSelector, submenuSelector, id) {
+    return this.client
+      .pause(2000)
+      .scrollWaitForExistAndClick(menuSelector)
+      .pause(2000)
+      .waitForVisible(submenuSelector)
+      .middleClick(submenuSelector)
+      .switchWindow(id)
+  }
+
+  setMachineDate(numberOfDay) {
+    var machineDate = new Date();
+    numberOfDay > 0 ? machineDate = machineDate.setDate(machineDate.getDate() + numberOfDay) : machineDate = machineDate.setDate(machineDate.getDate() - numberOfDay);
+    exec('sudo date -s "'+ new Date(machineDate) + '"',
+      (error, stdout, stderr) => {
+        global.error = error;
+      });
+    return this.client
+      .pause(4000)
+      .then(() => {
+        expect(global.error).to.be.a('null');
+      });
+  }
+
+  openURLOnNewWindow(url) {
+    return this.client.newWindow(url);
+  }
+
+  refresh() {
+    return this.client.refresh();
   }
 
 }
