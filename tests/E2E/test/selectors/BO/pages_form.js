@@ -5,7 +5,7 @@ module.exports = {
       order_form: '//*[@id="form-order"]',
       invoice_form: '//*[@id="invoice_date_form"]',
       order_slip_form: '//*[@id="form-order_slip"]',
-      delivery_form: '//*[@id="delivery_form"]',
+      delivery_form: '//*[@id="delivery_options_fieldset"]',
       shopping_cart_form: '//*[@id="form-cart"]',
     },
     Catalog: {

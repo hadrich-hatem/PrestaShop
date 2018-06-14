@@ -127,6 +127,7 @@ class Product extends CommonClient {
 
   selectFeature(addProductPage, name, value) {
     return this.client
+      .pause(2000)
       .scrollWaitForExistAndClick(addProductPage.feature_select)
       .waitAndSetValue(addProductPage.select_feature_created, name)
       .waitForExistAndClick(addProductPage.result_feature_select.replace('%ID', 0))
