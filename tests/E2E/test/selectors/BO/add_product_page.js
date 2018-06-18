@@ -43,8 +43,6 @@ module.exports = {
     var_selected_quantitie: '//*[@id="product_combination_bulk_quantity"]',
     combinations_thead: '//*[@id="combinations_thead"]/tr/th[7]',
     save_quantitie_button: '//*[@id="apply-on-combinations"]',
-    //add_feature_to_product_button: '//*[@id="add_feature_button"]',//@TODO unused selector
-    //feature_select: '//*[@id="features-content"]/div/div/div[1]/fieldset/span/span[1]/span',
     select_feature_created: '/html/body//span/span[1]/input',
     feature_select_button: '//*[@id="select2-form_step1_features_%ID_feature-container"]',
     feature_select_button1: '//*[@id="features-content"]/div/div/div[1]/fieldset/span/span[1]/span',
@@ -274,8 +272,8 @@ module.exports = {
     add_products_to_pack: '//*[@id="js_form_step1_inputPackItems"]/div',
     attribute_group_name: '//*[@id="attributes-list"]//a[text()[contains(.,"%NAME")]]',
     attribute_value_checkbox: '//*[@id="attribute-group-%ID"]/div/div[%S]//label',
-    category_expand_button: '//*[@id="categories"]//span[@data-action="expand"]',
-    category_collapse_button: '//*[@id="categories"]//span[@data-action="reduce"]'
+    category_expand_button: '//*[@id="categories-tree-expand"]',
+    category_collapse_button: '//*[@id="categories-tree-reduce"]'
   },
   ProductList: {
     product_id: '//*[@id="product_catalog_list"]//tr[%ID]/td[2]/label',

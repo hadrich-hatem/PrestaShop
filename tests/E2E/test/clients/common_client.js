@@ -1,10 +1,10 @@
 const {getClient} = require('../common.webdriverio.js');
-const {selector} = require('../globals.webdriverio.js');
 const {languageFO} = require('../selectors/FO/index');
 let path = require('path');
 let fs = require('fs');
 let pdfUtil = require('pdf-to-text');
 const exec = require('child_process').exec;
+let dateFormat = require('dateformat');
 
 global.tab = [];
 global.isOpen = false;
@@ -614,7 +614,8 @@ class CommonClient {
   setMachineDate(numberOfDay) {
     var machineDate = new Date();
     numberOfDay > 0 ? machineDate = machineDate.setDate(machineDate.getDate() + numberOfDay) : machineDate = machineDate.setDate(machineDate.getDate() - numberOfDay);
-    exec('sudo date -s "'+ new Date(machineDate) + '"',
+console.log(dateFormat(new Date(machineDate), "yyyy-mm-dd hh:MM:ss"));
+    exec('sudo timedatectl set-time "'+ dateFormat(new Date(machineDate), "yyyy-mm-dd hh:MM:ss") + '"',
       (error, stdout, stderr) => {
         global.error = error;
       });

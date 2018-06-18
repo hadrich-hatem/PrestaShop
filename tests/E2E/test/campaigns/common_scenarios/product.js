@@ -495,10 +495,12 @@ module.exports = {
       test('should click on "Reset" button', () => client.waitForExistAndClick(AddProductPage.catalog_reset_filter));
     }, 'product/check_product');
   },
-  clickOnCoverAndSave(client) {
-    test('should click on "Cover image" checkbox', () => client.waitForExistAndClick(AddProductPage.picture_cover_checkbox));
-    test('should click on "Save image settings" button', () =>  client.waitForExistAndClick(AddProductPage.picture_save_image_settings_button));
-    test('should verify the appearance of the green validation', () => client.checkTextValue(AddProductPage.validation_msg, "Settings updated."));
+  clickOnCoverAndSave(client, boom = false) {
+    test('should click on "Cover image" checkbox', () => client.waitForExistAndClick(AddProductPage.picture_cover_checkbox, 2000));
+    test('should click on "Save image settings" button', () =>  client.waitForExistAndClick(AddProductPage.picture_save_image_settings_button, 2000));
+    if (boom) {
+      test('should verify the appearance of the green validation', () => client.checkTextValue(AddProductPage.validation_msg, "Settings updated."));
+    }
   },
   checkTinyMceButtons(client, id) {
     test('should check the appearance of "Source" button', () => client.isExisting(AddProductPage.tinymce_buttons.replace('%ID', id + 1)));
@@ -521,7 +523,7 @@ module.exports = {
     if (option === "predefined_value") {
       test('should click on "Add a feature" and select one', () => {
         return promise
-          .then(() => client.scrollTo(AddProductPage.product_create_category_btn))
+          .then(() => client.scrollTo(AddProductPage.product_add_feature_btn))
           .then(() => client.waitForExistAndClick(AddProductPage.product_add_feature_btn, 3000))
       });
     } else {
