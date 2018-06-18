@@ -1,9 +1,9 @@
 const {getClient} = require('../common.webdriverio.js');
-const {selector} = require('../globals.webdriverio.js');
-const {languageFO} = require('../../test/selectors/FO/index');
+const {languageFO} = require('../selectors/FO/index');
 let path = require('path');
 let fs = require('fs');
 let pdfUtil = require('pdf-to-text');
+const exec = require('child_process').exec;
 
 global.tab = [];
 global.isOpen = false;
@@ -266,6 +266,12 @@ class CommonClient {
           .waitForExist(selector, 90000)
           .then(() => this.client.getAttribute(selector, attribute))
           .then((text) => expect(text).to.not.equal(value));
+      case "least":
+        return this.client
+          .pause(pause)
+          .waitForExist(selector, 90000)
+          .then(() => this.client.getAttribute(selector, attribute))
+          .then((text) => expect(parseInt(text)).to.be.at.least(value));
     }
   }
 
@@ -492,13 +498,6 @@ class CommonClient {
     delete object[pos];
   }
 
-  setAttributeById(selector) {
-    return this.client
-      .execute(function (selector) {
-        document.getElementById(selector).style.display = 'none';
-      }, selector);
-  }
-
   stringifyNumber(number) {
     let special = ['zeroth', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth', 'eleventh', 'twelfth', 'thirteenth', 'fourteenth', 'fifteenth', 'sixteenth', 'seventeenth', 'eighteenth', 'nineteenth'];
     let deca = ['twent', 'thirt', 'fort', 'fift', 'sixt', 'sevent', 'eight', 'ninet'];
@@ -506,7 +505,6 @@ class CommonClient {
     if (number % 10 === 0) return deca[Math.floor(number / 10) - 2] + 'ieth';
     return deca[Math.floor(number / 10) - 2] + 'y-' + special[number % 10];
   }
-
 
   /**
    * This function searches the data in the table in case a filter input exists
@@ -590,6 +588,39 @@ class CommonClient {
       return this.client
         .middleClick(selector)
     }
+  }
+
+  refresh() {
+    return this.client
+      .refresh();
+  }
+
+  clickAndOpenOnNewWindow(menuSelector, submenuSelector, id) {
+    return this.client
+      .pause(2000)
+      .scrollWaitForExistAndClick(menuSelector)
+      .pause(2000)
+      .waitForVisible(submenuSelector)
+      .middleClick(submenuSelector)
+      .switchWindow(id)
+  }
+
+  setMachineDate(numberOfDay) {
+    var machineDate = new Date();
+    numberOfDay > 0 ? machineDate = machineDate.setDate(machineDate.getDate() + numberOfDay) : machineDate = machineDate.setDate(machineDate.getDate() - numberOfDay);
+    exec('sudo date -s "'+ new Date(machineDate) + '"',
+      (error, stdout, stderr) => {
+        global.error = error;
+      });
+    return this.client
+      .pause(4000)
+      .then(() => {
+        expect(global.error).to.be.a('null');
+      });
+  }
+
+  openURLOnNewWindow(url) {
+    return this.client.newWindow(url);
   }
 
 }

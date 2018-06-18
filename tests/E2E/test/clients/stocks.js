@@ -22,7 +22,7 @@ class ModifyQuantity extends CommonClient {
     return this.client
       .pause(1000)
       .waitForExist(Stock.product_quantity.replace('%O', order), 90000)
-      .then(() => this.client.getText(Stock.product_quantity.replace('%O', order)))
+      .then(() => this.client.getText(Stock.product_quantity.replace('%O', order).replace('%I', 7)))
       .then((text) => global.tab["productQuantity"] = text)
       .waitAndSetValue(Stock.product_quantity_input.replace('%O', order), quantity)
       .then(() => this.client.getText(Stock.product_quantity_modified.replace('%O', order)))
