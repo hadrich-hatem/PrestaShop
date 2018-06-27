@@ -76,8 +76,8 @@ module.exports = {
         currencies_tab: '//*[@id="subtab-AdminCurrencies"]',
         geolocation_tab: '//*[@id="subtab-AdminGeolocation"]',
         locations_submenu: '#subtab-AdminParentCountries',
-        countries_tab: '//*[@id="main"]//div[@class="page-head-tabs"]//a[text()="Countries"]',
-        states_tab: '//*[@id="main"]//div[@class="page-head-tabs"]//a[text()="States"]',
+        countries_tab: '//*[@id="subtab-AdminCountries"]',
+        states_tab: '//*[@id="subtab-AdminStates"]',
         taxes_submenu: '#subtab-AdminParentTaxes',
         taxe_rules_tab: '#subtab-AdminTaxRulesGroup',
         translations_submenu: '#subtab-AdminTranslations'

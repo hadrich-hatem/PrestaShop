@@ -66,10 +66,10 @@ scenario('Create Standard Product in the Back Office', client => {
     test('should click on "Quantities"', () => client.scrollWaitForExistAndClick(AddProductPage.product_quantities_tab, 50));
     test('should set the "Quantity"', () => client.waitAndSetValue(AddProductPage.product_quantity_input, data.common.quantity));
     test('should set the "Minimum quantity for sale"', () => client.waitAndSetValue(AddProductPage.minimum_quantity_sale, data.common.qty_min));
-    test('should click on "Deny orders"', () => client.waitForExistAndClick(AddProductPage.pack_availability_preferences));
-    test('should set the "label when in stock"', () => client.waitAndSetValue(AddProductPage.pack_label_in_stock, data.common.qty_msg_stock));
+    test('should click on "Deny orders"', () => client.waitForExistAndClick(AddProductPage.availability_preferences_radio_button.replace('%I', 0)));
+    test('should set the "label when in stock"', () => client.waitAndSetValue(AddProductPage.label_in_stock_input, data.common.qty_msg_stock));
     test('should set the "Label when out of stock (and back order allowed)"', () => client.availability());
-    test('should set the "Availability date"', () => client.waitAndSetValue(AddProductPage.pack_availability_date, data.common.qty_date));
+    test('should set the "Availability date"', () => client.waitAndSetValue(AddProductPage.availability_date_input, data.common.qty_date));
   }, 'product/product');
 
   scenario('Edit product shipping', client => {
@@ -79,7 +79,7 @@ scenario('Create Standard Product in the Back Office', client => {
     test('should set the "Depth"', () => client.waitAndSetValue(AddProductPage.shipping_depth, data.common.cdepth));
     test('should set the "Weight"', () => client.waitAndSetValue(AddProductPage.shipping_weight, data.common.cweight));
     test('should set the "Does this product incur additional shipping costs?"', () => client.waitAndSetValue(AddProductPage.shipping_fees, data.common.cadd_ship_coast));
-    test('should click on "My carrier (Delivery next day!)"', () => client.scrollWaitForExistAndClick(AddProductPage.shipping_available_carriers, 50));
+    test('should click on "My carrier (Delivery next day!)"', () => client.scrollWaitForExistAndClick(AddProductPage.shipping_available_carriers.replace('%I', 1), 50));
   }, 'product/product');
 
   scenario('Edit the product pricing', client => {
@@ -158,8 +158,8 @@ scenario('Check the standard product in the Front Office', () => {
     test('should check that the "description" is equal to "' + data.common.description + '"', () => client.checkTextValue(productPage.product_description, data.common.description));
     test('should check that the product reference is equal to "' + data.common.product_reference + '"', () => {
       return promise
-        .then(() => client.waitForExistAndClick(productPage.product_detail_tab, 2000))
-        .then(() => client.scrollTo(productPage.product_detail_tab, 180))
+        .then(() => client.waitForExistAndClick(productPage.product_tab_list.replace('%I', 2), 2000))
+        .then(() => client.scrollTo(productPage.product_tab_list.replace('%I', 2), 180))
         .then(() => client.pause(2000))
         .then(() => client.checkTextValue(productPage.product_reference, data.common.product_reference))
     });

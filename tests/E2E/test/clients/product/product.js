@@ -48,8 +48,8 @@ class Product extends CommonClient {
 
   availability() {
     return this.client
-      .scrollTo(AddProductPage.pack_label_out_stock, 50)
-      .waitAndSetValue(AddProductPage.pack_label_out_stock, data.common.qty_msg_unstock);
+      .scrollTo(AddProductPage.label_out_stock_input, 50)
+      .waitAndSetValue(AddProductPage.label_out_stock_input, data.common.qty_msg_unstock);
   }
 
   selectPricingPriorities() {
@@ -94,9 +94,9 @@ class Product extends CommonClient {
     return this.client
       .scrollTo(AddProductPage.search_add_related_product_input)
       .waitAndSetValue(AddProductPage.search_add_related_product_input, search_products[0])
-      .waitForVisibleAndClick(AddProductPage.related_product_item)
+      .waitForVisibleAndClick(AddProductPage.related_product_item.replace('%I', 1))
       .waitAndSetValue(AddProductPage.search_add_related_product_input, search_products[1])
-      .waitForVisibleAndClick(AddProductPage.related_product_item);
+      .waitForVisibleAndClick(AddProductPage.related_product_item.replace('%I', 1));
   }
 
   addFeatureHeight(type) {
@@ -107,9 +107,9 @@ class Product extends CommonClient {
     return this.client
       .scrollTo(AddProductPage.product_add_feature_btn, 150)
       .waitForExistAndClick(AddProductPage.product_add_feature_btn)
-      .waitForExistAndClick(AddProductPage.feature_select_button)
-      .waitForExistAndClick(AddProductPage.feature_select_option_height)
-      .waitAndSetValue(AddProductPage.feature_custom_value_height, data.standard.features.feature1.custom_value);
+      .waitForExistAndClick(AddProductPage.feature_select_button.replace('%ID', 0))
+      .waitForExistAndClick(AddProductPage.feature_select_option.replace('%ID', 0))
+      .waitAndSetValue(AddProductPage.feature_custom_value.replace('%ID', 0), data.standard.features.feature1.custom_value);
   }
 
   setPrice(selector, price) {
@@ -128,11 +128,11 @@ class Product extends CommonClient {
 
   selectFeature(addProductPage, name, value) {
     return this.client
-      .scrollWaitForExistAndClick(addProductPage.feature_select)
+      .scrollWaitForExistAndClick(addProductPage.feature_select_button.replace('%ID', 0))
       .waitAndSetValue(addProductPage.select_feature_created, name)
       .waitForExistAndClick(addProductPage.result_feature_select.replace('%ID', 0))
       .pause(2000)
-      .selectByVisibleText(addProductPage.feature_value_select, value);
+      .selectByVisibleText(addProductPage.feature_value_select.replace('%ID', 0).replace('%V', 'not(@disabled)'), value);
   }
 
   clickNextOrPrevious(selector) {

@@ -62,7 +62,7 @@ scenario('Create product with combination in the Back Office', client => {
     test('should set the "Depth" input', () => client.waitAndSetValue(AddProductPage.shipping_depth, data.common.cdepth));
     test('should set the "Weight" input', () => client.waitAndSetValue(AddProductPage.shipping_weight, data.common.cweight));
     test('should set the "Does this product incur additional shipping costs?" input', () => client.waitAndSetValue(AddProductPage.shipping_fees, data.common.cadd_ship_coast));
-    test('should click on "My carrier (Delivery next day!)" button', () => client.scrollWaitForExistAndClick(AddProductPage.shipping_available_carriers, 50));
+    test('should click on "My carrier (Delivery next day!)" button', () => client.scrollWaitForExistAndClick(AddProductPage.shipping_available_carriers.replace('%I', 1), 50));
   }, 'product/product');
 
   scenario('Create product combinations', client => {
@@ -201,6 +201,10 @@ scenario('Check the product with combination in the Front Office', () => {
     test('should open the browser', () => client.open());
     test('should login successfully in the Front Office', () => client.signInFO(AccessPageFO));
   }, 'product/product');
+  /**
+   * This scenario is based on the bug described in this ticket
+   * http://forge.prestashop.com/browse/BOOM-3000
+   **/
   scenario('Check that the product with combination is well displayed in the Front Office', client => {
     test('should set the shop language to "English"', () => client.changeLanguage());
     test('should search for the product', () => client.searchByValue(SearchProductPage.search_input, SearchProductPage.search_button, data.standard.name + 'C' + date_time));
@@ -216,8 +220,8 @@ scenario('Check the product with combination in the Front Office', () => {
     test('should check that the "description" is equal to "' + data.common.description + '"', () => client.checkTextValue(productPage.product_description, data.common.description));
     test('should check that the product reference is equal to "' + data.common.product_reference + '"', () => {
       return promise
-        .then(() => client.waitForExistAndClick(productPage.product_detail_tab, 2000))
-        .then(() => client.scrollTo(productPage.product_detail_tab, 180))
+        .then(() => client.waitForExistAndClick(productPage.product_tab_list.replace('%I', 2), 2000))
+        .then(() => client.scrollTo(productPage.product_tab_list.replace('%I', 2), 180))
         .then(() => client.pause(2000))
         .then(() => client.checkTextValue(productPage.product_reference, data.common.product_reference));
     });
