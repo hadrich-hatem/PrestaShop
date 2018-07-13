@@ -28,7 +28,7 @@ scenario('Create a pack of products in the Back Office', client => {
     });
     test('should set the "Add products to your pack"', () => {
       return promise
-        .then(() => client.scrollTo(AddProductPage.description_tab))
+        .then(() => client.scrollTo(AddProductPage.tab_description))
         .then(() => client.waitAndSetValue(AddProductPage.search_product_pack, data.pack.pack.pack2.search))
         .then(() => client.waitForExistAndClick(AddProductPage.product_item_pack))
         .then(() => client.waitAndSetValue(AddProductPage.product_pack_item_quantity, data.pack.pack.pack2.quantity))

@@ -13,7 +13,9 @@ const {Menu} = require('../../../selectors/BO/menu.js');
 const {Google} = require('../../../selectors/External/google.js');
 const {Customer} = require('../../../selectors/BO/customers/customer');
 const {BO} = require('../../../selectors/BO/customers/index');
+const {OnBoarding} = require('../../../selectors/BO/onboarding');
 let common = require('../../../common.webdriverio');
+const product = require('../../common_scenarios/product');
 let promise = Promise.resolve();
 
 let shipping = {
@@ -30,12 +32,18 @@ let google = {
   lastname: 'test'
 };
 
-scenario('Create Standard Product in the Back Office', client => {
-  test('should open browser', () => client.open());
-  test('should login successfully in the Back Office', () => client.signInBO(AccessPageBO, true));
-  test('should go to "Catalog" page', () => client.goToSubtabMenuPage(Menu.Sell.Catalog.catalog_menu, Menu.Sell.Catalog.products_submenu));
-  test('should click on "NEW PRODUCT"', () => client.waitForExistAndClick(AddProductPage.new_product_button));
-
+scenario('Create Standard Product in the Back Office', () => {
+  scenario('Login in the Back Office', client => {
+    test('should open browser', () => client.open());
+    test('should login successfully in the Back Office', () => client.signInBO(AccessPageBO, true));
+    test('should check and click on "Stop the OnBoarding" button', () => {
+      return promise
+        .then(() => client.isVisible(OnBoarding.stop_button))
+        .then(() => client.stopOnBoarding(OnBoarding.stop_button));
+    });
+    test('should go to "Catalog" page', () => client.goToSubtabMenuPage(Menu.Sell.Catalog.catalog_menu, Menu.Sell.Catalog.products_submenu));
+    test('should click on "NEW PRODUCT"', () => client.waitForExistAndClick(AddProductPage.new_product_button));
+  }, 'onboarding');
   scenario('Fill "Basic settings" form', client => {
     test('should check the "product name" placeholder', () => client.checkAttributeValue(AddProductPage.product_name_input, 'placeholder', 'Enter your product name'));
     test('should check the "product name" is empty', () => client.checkAttributeValue(AddProductPage.product_name_input, 'value', ''));
@@ -60,7 +68,9 @@ scenario('Create Standard Product in the Back Office', client => {
     test('should set the "Summary" text to bold', () => client.setEditorFontText(AddProductPage.summary_textarea, 0, 26, 'strong'));
     test('should set the "Summary" text to italic', () => client.setEditorFontText(AddProductPage.summary_textarea, 2, 29, 'em'));
     test('should set the "Summary" text to underline', () => client.setEditorFontText(AddProductPage.summary_textarea, 5, 67, 'underline'));
-    test('should click on "Description" tab', () => client.waitForExistAndClick(AddProductPage.description_tab));
+    product.checkTinyMceButtons(client, 11);
+    test('should click on "Description" tab', () => client.waitForExistAndClick(AddProductPage.tab_description));
+    product.checkTinyMceButtons(client, 51);
     test('should set the "Description" text', () => client.setEditorText(AddProductPage.description_textarea, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."));
     test('should switch the product online', () => {
       return promise
@@ -74,44 +84,15 @@ scenario('Create Standard Product in the Back Office', client => {
     });
     test('should click on "Preview" button', () => client.waitForExistAndClick(AddProductPage.preview_buttons));
     test('should go to the Front Office', () => client.switchWindow(1));
-    test('should check that the "Description" contains "Bold" text', () => client.isExisting(productPage.product_summary_bold_text, 3000));
+    test('should click on the "Preview" link', () => client.waitForExistAndClick(AddProductPage.preview_link, 2000));
+    test('should check that the "Description" contains "Bold" text', () => client.isExisting(productPage.product_summary_bold_text, 5000));
     test('should check that the "Description" contains "Italic" text', () => client.isExisting(productPage.product_summary_italic_text));
     test('should check that the "Description" contains "Underline" text', () => client.isExisting(productPage.product_summary_underline_text));
     test('should go back to the Back Office', () => client.switchWindow(0));
-    test('should click on "Add a feature" and select one', () => {
-      return promise
-        .then(() => client.scrollTo(AddProductPage.create_category_button))
-        .then(() => client.waitForExistAndClick(AddProductPage.add_feature_to_product_button, 3000))
-    });
-    test('should choose "Frame Size" feature from the dropdown list', () => {
-      return promise
-        .then(() => client.scrollWaitForExistAndClick(AddProductPage.feature_select.replace('%ID', 0)))
-        .then(() => client.waitForVisibleAndClick(AddProductPage.feature_select_option.replace('%ID', 0).replace('%V', "Frame Size")));
-    });
-    test('should choose "Cotton" pre-defined value from the dropdown list', () => client.waitAndSelectByVisibleText(AddProductPage.feature_value_select.replace('%ID', 0), "Cotton", 2000));
-    test('should check that the "Custom value" input is well disabled', () => client.checkAttributeValue(AddProductPage.feature_custom_value.replace('%ID', 0), 'disabled', 'disabled', 'equal', 2000));
-    test('should click on "Add a feature" and select one', () => client.scrollWaitForExistAndClick(AddProductPage.add_feature_to_product_button));
-    test('should choose "Frame Size" feature from the dropdown list', () => {
-      return promise
-        .then(() => client.scrollWaitForExistAndClick(AddProductPage.feature_select.replace('%ID', 1)))
-        .then(() => client.waitForVisibleAndClick(AddProductPage.feature_select_option.replace('%ID', 1).replace('%V', "Frame Size")));
-    });
-    test('should choose "Elastane" pre-defined value from the dropdown list', () => client.waitAndSelectByVisibleText(AddProductPage.feature_value_select.replace('%ID', 1), "Elastane", 2000));
-    test('should check that the "Custom value" input is well disabled', () => client.checkAttributeValue(AddProductPage.feature_custom_value.replace('%ID', 0), 'disabled', 'disabled', 'equal', 2000));
-    test('should click on "Add a feature" and select one', () => client.scrollWaitForExistAndClick(AddProductPage.add_feature_to_product_button));
-    test('should choose "Compositions" feature from the dropdown list', () => {
-      return promise
-        .then(() => client.scrollWaitForExistAndClick(AddProductPage.feature_select.replace('%ID', 2)))
-        .then(() => client.waitForVisibleAndClick(AddProductPage.feature_select_option.replace('%ID', 2).replace('%V', "Compositions")));
-    });
-    test('should set the "Custom value" input', () => client.waitAndSetValue(AddProductPage.feature_custom_value.replace('%ID', 2), "azerty"));
-    test('should click on "Add a feature" and select one', () => client.scrollWaitForExistAndClick(AddProductPage.add_feature_to_product_button));
-    test('should choose "Paper Type" feature from the dropdown list', () => {
-      return promise
-        .then(() => client.scrollWaitForExistAndClick(AddProductPage.feature_select.replace('%ID', 3)))
-        .then(() => client.waitForVisibleAndClick(AddProductPage.feature_select_option.replace('%ID', 3).replace('%V', "Paper Type")));
-    });
-    test('should set the "Custom value" input', () => client.waitAndSetValue(AddProductPage.feature_custom_value.replace('%ID', 3), "plop"));
+    product.addProductFeature(client, "Frame Size", 0, "40x60cm");
+    product.addProductFeature(client, "Frame Size", 1, "80x120cm");
+    product.addProductFeature(client, "Compositions", 2, '', "azerty", "custom_value");
+    product.addProductFeature(client, "Paper Type", 3, '', "plop", "custom_value");
     test('should click on "Save" button', () => client.waitForExistAndClick(AddProductPage.save_product_button, 3000));
     test('should check that the success alert message is well displayed', () => client.waitForExistAndClick(AddProductPage.close_validation_button));
     test('should go to the Front Office', () => client.switchWindow(1));
@@ -121,12 +102,12 @@ scenario('Create Standard Product in the Back Office', client => {
     test('should check that the "Paper Type" feature does exist', () => client.isExisting(productPage.product_features.replace('%F', 'Paper Type')));
     test('should check that the value of "Paper Type" feature does exist', () => client.isExisting(productPage.product_features.replace('%F', 'plop')));
     test('should check that the "Frame Size" feature does exist', () => client.isExisting(productPage.product_features.replace('%F', 'Frame Size')));
-    test('should check that the first value of "Frame Size" feature does exist', () => client.isExisting(productPage.product_features.replace('%F', 'Cotton')));
-    test('should check that the second value of "Frame Size" feature does exist', () => client.isExisting(productPage.product_features.replace('%F', 'Elastane')));
+    test('should check that the first value of "Frame Size" feature does exist', () => client.isExisting(productPage.product_features.replace('%F', '40x60cm')));
+    test('should check that the second value of "Frame Size" feature does exist', () => client.isExisting(productPage.product_features.replace('%F', '80x120cm')));
     test('should go back to the Back Office', () => client.switchWindow(0));
     test('should click on "Delete" icon of the second feature', () => client.waitForExistAndClick(AddProductPage.delete_feature_icon.replace('%POS', 2)));
     test('should click on "Yes" modal button', () => client.waitForVisibleAndClick(AddProductPage.delete_confirmation_button.replace('%BUTTON', 'Yes')));
-    test('should click on "Delete" icon of the third feature', () => client.waitForExistAndClick(AddProductPage.delete_feature_icon.replace('%POS', 2), 2000));
+    test('should click on "Delete" icon of the third feature', () => client.waitForVisibleAndClick(AddProductPage.delete_feature_icon.replace('%POS', 2), 3000));
     test('should click on "Yes" modal button', () => client.waitForVisibleAndClick(AddProductPage.delete_confirmation_button.replace('%BUTTON', 'Yes')));
     test('should click on "ADD A BRAND" button', () => client.waitForExistAndClick(AddProductPage.add_brand_button, 2000));
     test('should select brand', () => {
@@ -142,9 +123,11 @@ scenario('Create Standard Product in the Back Office', client => {
     test('should check that the "Graphic Corner" of the picture brand does exist', () => client.isExisting(productPage.manufacturer_picture.replace('%ALT', 'Graphic Corner'), 1000));
     test('should go back to the Back Office', () => client.switchWindow(0));
     test('should click on "Delete" icon of the brand', () => client.scrollWaitForExistAndClick(AddProductPage.delete_brand_icon, 50, 2000));
-    test('should click on "Yes" modal button', () => client.waitForVisibleAndClick(AddProductPage.delete_confirmation_button.replace('%BUTTON', 'Yes')));
-    test('should click on "Expand" button', () => client.waitForExistAndClick(AddProductPage.category_expand_button, 2000));
-    test('should click on "Create a category" button', () => client.scrollWaitForExistAndClick(AddProductPage.create_category_button));
+    test('should click on "Yes" modal button', () => client.waitForVisibleAndClick(AddProductPage.delete_confirmation_button.replace('%BUTTON', 'Yes'), 3000));
+    /** The default UI component of Tree category is Expand
+     * test('should click on "Expand" button', () => client.waitForExistAndClick(AddProductPage.category_expand_button, 2000));
+     **/
+    test('should click on "Create a category" button', () => client.scrollWaitForExistAndClick(AddProductPage.create_category_button, 150, 2000));
     test('should set the "New category name" input', () => client.waitAndSetValue(AddProductPage.product_category_name_input, "test"));
     test('should choose "Clothes" as Parent of the category from the dropdown list', () => {
       return promise
@@ -152,10 +135,12 @@ scenario('Create Standard Product in the Back Office', client => {
         .then(() => client.waitForVisibleAndClick(AddProductPage.parent_category_option.replace('%N', "Clothes")));
     });
     test('should click on "Create" button', () => client.scrollWaitForExistAndClick(AddProductPage.category_save_button));
-    test('should check that the "Category" is well created', () => client.isExisting(AddProductPage.category_checkbock.replace('%S', 'test'), 4000));
+    /** The default UI component of Tree category is Expand
+     * test('should click on "Expand" button', () => client.waitForExistAndClick(AddProductPage.category_expand_button, 2000));
+     **/
+    test('should check that the "Category" is well created', () => client.isExisting(AddProductPage.category_checkbox.replace('%S', 'test'), 4000));
     test('should click on "Delete" icon of the created category', () => client.waitForExistAndClick(AddProductPage.delete_category_icon.replace('%I', 2)));
-    test('should open all categories', () => client.openAllCategories());
-    test('should check that the "Product" is well dissociated with the created product', () => client.isExisting(AddProductPage.category_checkbock.replace('%S', 'test'), 4000));
+    test('should check that the "Product" is well dissociated with the created category', () => client.isExisting(AddProductPage.category_checkbox.replace('%S', 'test'), 4000));
     test('should click on "Save" button', () => client.waitForExistAndClick(AddProductPage.save_product_button, 3000));
     test('should check that the success alert message is well displayed', () => client.waitForExistAndClick(AddProductPage.close_validation_button));
     test('should click on "Add related product" button', () => client.waitForExistAndClick(AddProductPage.add_related_product_btn));
@@ -190,7 +175,7 @@ scenario('Create Standard Product in the Back Office', client => {
     test('should click on "Save" button', () => client.waitForExistAndClick(AddProductPage.save_product_button, 3000));
     test('should check that the success alert message is well displayed', () => client.waitForExistAndClick(AddProductPage.close_validation_button));
     scenario('Allow the order of products out of stock', client => {
-      test('should close the "Catalog" menu', () => client.waitForExistAndClick(Menu.Sell.Catalog.catalog_menu));
+      test('should close the "Catalog" menu', () => client.waitForExistAndClick(Menu.Sell.Catalog.catalog_menu, 3000));
       test('should go to "Product settings" page', () => client.clickAndOpenOnNewWindow(Menu.Configure.ShopParameters.shop_parameters_menu, Menu.Configure.ShopParameters.product_settings_submenu, 2));
       test('should switch "Allow ordering of out-of-stock products" to "Yes"', () => client.scrollWaitForExistAndClick(ProductSettings.allowOrderOutOfStock_button.replace('%I', '1')));
       test('should click on "Save" button', () => {
@@ -270,6 +255,31 @@ scenario('Create Standard Product in the Back Office', client => {
     test('should set "Height" input', () => client.waitAndSetValue(AddProductPage.shipping_height, '10'));
     test('should set "Depth" input', () => client.waitAndSetValue(AddProductPage.shipping_depth, '5'));
     test('should set "Weight" input', () => client.waitAndSetValue(AddProductPage.shipping_weight, '1'));
+    test('should click on "None" radio button', () => client.waitForExistAndClick(AddProductPage.delivery_time_radio_button.replace('%I', 0)));
+    test('should click on "Save" button', () => client.waitForExistAndClick(AddProductPage.save_product_button, 3000));
+    test('should check that the success alert message is well displayed', () => client.waitForExistAndClick(AddProductPage.close_validation_button));
+    test('should go to the Front Office', () => client.switchWindow(1));
+    test('should check that the delivery time does not exist', () => client.isNotExisting(productPage.delivery_information_span));
+    test('should go to the "Product settings" page', () => client.switchWindow(2));
+    test('should set "Delivery time of in-stock products" input', () => client.waitAndSetValue(ProductSettings.delivery_time_in_stock_input, 'Delivered within 2 days'));
+    test('should click on "Save" button', () => {
+      return promise
+        .then(() => client.isVisible(AddProductPage.symfony_toolbar, 3000))
+        .then(() => {
+          if (global.isVisible) {
+            client.waitForExistAndClick(AddProductPage.symfony_toolbar)
+          }
+        })
+        .then(() => client.scrollWaitForExistAndClick(ProductSettings.save_button.replace('%POS', '3')));
+    });
+    test('should verify the appearance of the green validation', () => client.checkTextValue(ShopParameters.success_box, "Update successful"));
+    test('should go back to the Back Office', () => client.switchWindow(0));
+    test('should click on "Default delivery time" radio button', () => client.waitForExistAndClick(AddProductPage.delivery_time_radio_button.replace('%I', 1)));
+    test('should click on "Save" button', () => client.waitForExistAndClick(AddProductPage.save_product_button, 3000));
+    test('should check that the success alert message is well displayed', () => client.waitForExistAndClick(AddProductPage.close_validation_button));
+    test('should go to the Front Office', () => client.switchWindow(1));
+    test('should check that the delivery time is well displayed', () => client.checkTextValue(productPage.delivery_information_span, "Delivered within 2 days"));
+    test('should go back to the Back Office', () => client.switchWindow(0));
     test('should check the first carrier checkbox button', () => {
       return promise
         .then(() => client.scrollWaitForExistAndClick(AddProductPage.shipping_available_carriers.replace('%I', 0)))
@@ -317,14 +327,16 @@ scenario('Create Standard Product in the Back Office', client => {
       test('should click on "Save" button', () => client.waitForExistAndClick(AddProductPage.save_product_button, 3000));
       test('should check that the success alert message is well displayed', () => client.waitForExistAndClick(AddProductPage.close_validation_button));
       test('should go to the Front Office', () => client.switchWindow(1));
-      //Example: shipping_price = (((shipping.carrier + shipping.additional_cost) * shipping.carrier_tax) + (shipping.carrier + shipping.additional_cost) + (shipping.handling_charge * shipping.carrier_tax) + shipping.handling_charge))
+      /**
+       * Example: shipping_price = (((shipping.carrier + shipping.additional_cost) * shipping.carrier_tax) + (shipping.carrier + shipping.additional_cost) + (shipping.handling_charge * shipping.carrier_tax) + shipping.handling_charge))
+       */
       test('should check that the price of second carrier is well displayed', () => client.checkTextValue(CheckoutOrderPage.carrier_price.replace('%I', 2), (((shipping.carrier + shipping.additional_cost) * shipping.carrier_tax) + (shipping.carrier + shipping.additional_cost) + (shipping.handling_charge * shipping.carrier_tax) + shipping.handling_charge).toString(), 'contain'));
       test('should go back to the Back Office', () => client.switchWindow(0));
     }, 'common_client');
     scenario('Create a "Currency"', client => {
       test('should close the "Catalog" menu', () => client.waitForExistAndClick(Menu.Sell.Catalog.catalog_menu));
       test('should go to "Localization" page', () => client.clickAndOpenOnNewWindow(Menu.Improve.International.international_menu, Menu.Improve.International.localization_submenu, 3));
-      test('should click on "Currencies" tab', () => client.waitForExistAndClick(Menu.Improve.International.currencies_tab));
+      test('should click on "Currencies" tab', () => client.waitForExistAndClick(Menu.Improve.International.currencies_tab, 3000));
       test('should click on "Add new currency" button', () => client.waitForExistAndClick(Localization.Currency.add_new_currency_button));
       test('should click on "Status" button', () => client.waitForExistAndClick(Localization.Currency.status_button));
       test('should click on "Save" button', () => client.waitForExistAndClick(Localization.Currency.save_button));
@@ -362,7 +374,7 @@ scenario('Create Standard Product in the Back Office', client => {
       test('should check that the "Manage tax rules" link will open in a new tab', () => client.checkAttributeValue(AddProductPage.pricing_manage_tax_rules_link, 'target', '_blank'));
       test('should go to the Front Office', () => client.switchWindow(1));
       test('should go to the "Home" page', () => client.waitForExistAndClick(AccessPageFO.logo_home_page));
-      test('should set the shop language to "English"', () => client.changeLanguage('english'));
+      test('should set the shop language to "English"', () => client.changeLanguage());
       test('should click on "CART" button', () => client.waitForExistAndClick(AccessPageFO.shopping_cart_button));
       test('should click on "Product name" link', () => client.waitForExistAndClick(CheckoutOrderPage.product_name_link));
       test('should check that the "Product price" is equal to "€9.00"', () => client.checkTextValue(productPage.product_price, '€9.00'));
@@ -391,6 +403,7 @@ scenario('Create Standard Product in the Back Office', client => {
       test('should check that the success alert message is well displayed', () => client.waitForExistAndClick(AddProductPage.close_validation_button));
       test('should go to the Front Office', () => client.switchWindow(1));
       test('should search for the product', () => client.searchByValue(SearchProductPage.search_input, SearchProductPage.search_button, 'TG' + date_time));
+      test('should set the shop language to "English"', () => client.changeLanguage());
       test('should go to the product page', () => client.waitForExistAndClick(SearchProductPage.product_result_name));
       test('should check that the product price is equal to "€0.00"', () => client.checkTextValue(productPage.product_price, '€0.00'));
       test('should verify that the discount is equal to "SAVE €9.00"', () => client.checkTextValue(CheckoutOrderPage.product_discount_details, 'SAVE €9.00'));
@@ -401,7 +414,7 @@ scenario('Create Standard Product in the Back Office', client => {
       test('should set the "Apply a discount of" input', () => client.waitAndSetValue(AddProductPage.specific_price_discount_input, '3', 2000));
       test('should click on "Apply" button', () => client.waitForExistAndClick(AddProductPage.specific_price_save_button));
       test('should click on "Save" button', () => client.waitForExistAndClick(AddProductPage.save_product_button));
-      test('should check that the success alert message is well displayed', () => client.waitForExistAndClick(AddProductPage.close_validation_button));
+      test('should check that the success alert message is well displayed', () => client.waitForVisibleAndClick(AddProductPage.close_validation_button));
       test('should go to the Front Office', () => client.switchWindow(1));
       test('should check that the product price is equal to "€6.00"', () => client.checkTextValue(productPage.product_price, '€6.00'));
       test('should verify that the discount is equal to "SAVE €3.00"', () => client.checkTextValue(CheckoutOrderPage.product_discount_details, 'SAVE €3.00'));
@@ -524,7 +537,7 @@ scenario('Create Standard Product in the Back Office', client => {
       test('should click on "Save" button', () => client.waitForExistAndClick(AddProductPage.save_product_button));
       test('should check that the success alert message is well displayed', () => client.waitForExistAndClick(AddProductPage.close_validation_button));
       test('should go to the Front Office', () => client.switchWindow(1));
-      test('should set the shop language to "English"', () => client.changeLanguage('english'));
+      test('should set the shop language to "English"', () => client.changeLanguage());
       test('should click on "Currency" select and choose "EUR €" from the dropdown list', () => {
         return promise
           .then(() => client.waitForExistAndClick(AccessPageFO.currency_select))
@@ -550,7 +563,7 @@ scenario('Create Standard Product in the Back Office', client => {
       test('should check that the product price is equal to "€9.00"', () => client.checkTextValue(productPage.product_price, '€9.00'));
       test('should verify that the discount does not exist', () => client.isNotExisting(CheckoutOrderPage.product_discount_details));
       test('should login successfully in the Front Office', () => client.signInFO(AccessPageFO));
-      test('should set the shop language to "English"', () => client.changeLanguage('english'));
+      test('should set the shop language to "English"', () => client.changeLanguage());
       test('should search for the product', () => client.searchByValue(SearchProductPage.search_input, SearchProductPage.search_button, 'TG' + date_time));
       test('should go to the product page', () => client.waitForExistAndClick(SearchProductPage.product_result_name));
       test('should check that the product price is equal to "€8.55"', () => client.checkTextValue(productPage.product_price, '€8.55', 'equal', 2000));
@@ -569,11 +582,11 @@ scenario('Create Standard Product in the Back Office', client => {
       test('should click on "Save" button', () => client.waitForExistAndClick(AddProductPage.save_product_button));
       test('should check that the success alert message is well displayed', () => client.waitForExistAndClick(AddProductPage.close_validation_button));
     }, 'common_client');
-    scenario('Edit product options', client => {
+    scenario('Fill "Options" form', client => {
       test('should click on "Options"', () => client.scrollWaitForExistAndClick(AddProductPage.product_options_tab));
       test('should click on "Web only (not sold in your retail store)" checkbox', () => client.waitForExistAndClick(AddProductPage.options_online_only));
       test('should click on "Save" button', () => client.waitForExistAndClick(AddProductPage.save_product_button));
-      test('should check that the success alert message is well displayed', () => client.waitForExistAndClick(AddProductPage.close_validation_button));
+      test('should check that the success alert message is well displayed', () => client.waitForVisibleAndClick(AddProductPage.close_validation_button, 3000));
       test('should go to the Front Office', () => client.switchWindow(1));
       test('should check that the product online only flag does not exist', () => client.isNotExisting(productPage.product_online_only_flag, 2000));
       test('should go back to the Back Office', () => client.switchWindow(0));
@@ -602,7 +615,7 @@ scenario('Create Standard Product in the Back Office', client => {
       test('should go to next page', () => {
         return promise
           .then(() => client.isVisible(productPage.pagination_next))
-          .then(() => client.clickPageNextOrPrevious(productPage.pagination_next));
+          .then(() => client.clickNextOrPrevious(productPage.pagination_next));
       });
       test('should check that the product is well displayed', () => client.isExisting(productPage.product_image.replace('%S', 'tg' + date_time)));
       test('should go to the "Home" page', () => client.waitForExistAndClick(AccessPageFO.logo_home_page));
@@ -618,7 +631,7 @@ scenario('Create Standard Product in the Back Office', client => {
       test('should go to next page', () => {
         return promise
           .then(() => client.isVisible(productPage.pagination_next))
-          .then(() => client.clickPageNextOrPrevious(productPage.pagination_next));
+          .then(() => client.clickNextOrPrevious(productPage.pagination_next));
       });
       test('should check that the product does not exist', () => client.isNotExisting(productPage.product_image.replace('%S', 'tshirt-gray')));
       test('should search for the product', () => client.searchByValue(SearchProductPage.search_input, SearchProductPage.search_button, 'TG' + date_time));
@@ -633,7 +646,7 @@ scenario('Create Standard Product in the Back Office', client => {
       test('should go to next page', () => {
         return promise
           .then(() => client.isVisible(productPage.pagination_next))
-          .then(() => client.clickPageNextOrPrevious(productPage.pagination_next));
+          .then(() => client.clickNextOrPrevious(productPage.pagination_next));
       });
       test('should check that the product does not exist', () => client.isNotExisting(productPage.product_image.replace('%S', 'tshirt-gray')));
       test('should search for the product', () => client.searchByValue(SearchProductPage.search_input, SearchProductPage.search_button, 'TG' + date_time));
@@ -647,7 +660,7 @@ scenario('Create Standard Product in the Back Office', client => {
       test('should go to the "Home" page', () => client.waitForExistAndClick(AccessPageFO.logo_home_page));
       test('should search for the product', () => client.searchByValue(SearchProductPage.search_input, SearchProductPage.search_button, 'TG' + date_time));
       test('should go to the product page', () => client.waitForExistAndClick(SearchProductPage.product_result_name));
-      test('should set the shop language to "English"', () => client.changeLanguage('english'));
+      test('should set the shop language to "English"', () => client.changeLanguage());
       test('should click on "Product Details" tab', () => client.waitForExistAndClick(productPage.product_tab_list.replace('%I', 2), 5000));
       test('should check that the "Product condition" is equal to "New product"', () => {
         return promise
@@ -680,6 +693,7 @@ scenario('Create Standard Product in the Back Office', client => {
       test('should click on "Save" button', () => client.waitForExistAndClick(AddProductPage.save_product_button));
       test('should check that the success alert message is well displayed', () => client.waitForExistAndClick(AddProductPage.close_validation_button));
       test('should go to the Front Office', () => client.switchWindow(1));
+      test('should click on the "Preview" link', () => client.waitForExistAndClick(AddProductPage.preview_link, 2000));
       test('should set the "Product message" textarea', () => client.waitAndSetValue(productPage.product_customization_message, 'plop'));
       test('should click on "Save customization" button', () => client.waitForExistAndClick(productPage.save_customization_button));
       test('should click on "ADD TO CART" button', () => client.waitForExistAndClick(CheckoutOrderPage.add_to_cart_button));
@@ -729,7 +743,7 @@ scenario('Create Standard Product in the Back Office', client => {
       test('should click on "Save customization" button', () => client.waitForExistAndClick(productPage.save_customization_button));
       test('should click on "ADD TO CART" button', () => client.waitForExistAndClick(CheckoutOrderPage.add_to_cart_button, 3000));
       test('should click on "Proceed to checkout" modal button', () => client.waitForVisibleAndClick(CheckoutOrderPage.proceed_to_checkout_modal_button));
-      test('should set the "Quantity" input', () => client.waitAndSetValue(CheckoutOrderPage.quantity_input, '20', 2000));
+      test('should set the "Quantity" input', () => client.waitAndSetValue(CheckoutOrderPage.quantity_input.replace('%NUMBER', 1), '20', 2000));
       test('should click on "Proceed to checkout" button', () => client.waitForExistAndClick(CheckoutOrderPage.proceed_to_checkout_button));
 
       scenario('Create new account', client => {
@@ -774,6 +788,7 @@ scenario('Create Standard Product in the Back Office', client => {
     scenario('Disable the order of products out of stock', client => {
       test('should go to "Product settings" page', () => client.switchWindow(2));
       test('should switch "Allow ordering of out-of-stock products" to "No"', () => client.scrollWaitForExistAndClick(ProductSettings.allowOrderOutOfStock_button.replace('%I', '0')));
+      test('should set "Delivery time of in-stock products" input', () => client.waitAndSetValue(ProductSettings.delivery_time_in_stock_input, ''));
       test('should click on "Save" button', () => {
         return promise
           .then(() => client.isVisible(AddProductPage.symfony_toolbar, 3000))

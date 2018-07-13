@@ -110,7 +110,8 @@ class CommonClient {
         if (isVisible) {
           this.client.waitForVisibleAndClick(languageFO.language_option.replace('%LANG', language));
         }
-      });
+      })
+      .then(() => this.client.pause(3000));
   }
 
   selectLanguage(selector, option, language, id) {
@@ -445,7 +446,7 @@ class CommonClient {
   }
 
   /**
-   * This function checks the search result
+   * This function edit the text of tinyMCE
    * @param selector editor body selector
    * @param content
    * @returns {*}
@@ -605,9 +606,10 @@ class CommonClient {
     return this.client
       .pause(4000)
       .scrollWaitForExistAndClick(menuSelector)
+      .pause(2000)
       .waitForVisible(submenuSelector)
       .middleClick(submenuSelector)
-      .switchWindow(id)
+      .switchWindow(id);
   }
 
   setMachineDate(numberOfDay) {

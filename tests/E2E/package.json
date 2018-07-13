@@ -9,6 +9,7 @@
     "high-test": "node_modules/mocha/bin/mocha test/campaigns/high/*",
     "full-test": "node_modules/mocha/bin/mocha test/campaigns/full/*",
     "boom": "node_modules/mocha/bin/mocha test/campaigns/boom/*",
+    "specific-boom-test": "node_modules/mocha/bin/mocha test/campaigns/boom/$TEST_PATH",
     "test": "node_modules/mocha/bin/mocha test/campaigns/regular/*",
     "install-upgrade-test": "node_modules/mocha/bin/mocha test/campaigns/install_upgrade/*",
     "specific-test": "node_modules/mocha/bin/mocha test/campaigns/$TEST_PATH",

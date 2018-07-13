@@ -76,8 +76,8 @@ module.exports = {
         currencies_tab: '//*[@id="subtab-AdminCurrencies"]',
         geolocation_tab: '//*[@id="subtab-AdminGeolocation"]',
         locations_submenu: '#subtab-AdminParentCountries',
-        countries_tab: '//*[@id="main"]//div[@class="page-head-tabs"]//a[text()="Countries"]',
-        states_tab: '//*[@id="main"]//div[@class="page-head-tabs"]//a[text()="States"]',
+        countries_tab: '//*[@id="subtab-AdminCountries"]',
+        states_tab: '//*[@id="subtab-AdminStates"]',
         taxes_submenu: '#subtab-AdminParentTaxes',
         taxe_rules_tab: '#subtab-AdminTaxRulesGroup',
         translations_submenu: '#subtab-AdminTranslations'
@@ -96,6 +96,7 @@ module.exports = {
         titles_tab: '//*[@id="head_tabs"]//a[text()="Titles"]',
         contact_submenu: '#subtab-AdminParentStores',
         stores_tab: '//*[@id="main"]//div[@class="page-head-tabs"]//a[text()="Stores"]',
+        traffic_seo_submenu: '#subtab-AdminParentMeta',
         search_engines_tab: '//*[@id="main"]//div[@class="page-head-tabs"]//a[text()="Search Engines"]',
         referrers_tab: '//*[@id="main"]//div[@class="page-head-tabs"]//a[text()="Referrers"]',
         search_submenu: '#subtab-AdminParentSearchConf',

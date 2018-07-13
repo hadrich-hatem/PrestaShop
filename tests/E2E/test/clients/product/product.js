@@ -37,7 +37,7 @@ class Product extends CommonClient {
       .scrollTo(AddProductPage.catalog_home, 50)
       .waitForExistAndClick(AddProductPage.catalog_home)
       .waitForExistAndClick(AddProductPage.catalog_element_radio.replace('%I', 1))
-      .waitForExistAndClick(AddProductPage.catalog_element_radio.replace('%I', 1));
+      .waitForExistAndClick(AddProductPage.catalog_element_radio.replace('%I', 2));
   }
 
   availability() {
@@ -101,8 +101,8 @@ class Product extends CommonClient {
     return this.client
       .scrollTo(AddProductPage.product_add_feature_btn, 150)
       .waitForExistAndClick(AddProductPage.product_add_feature_btn)
-      .waitForExistAndClick(AddProductPage.feature_select_button)
-      .waitForExistAndClick(AddProductPage.feature_select_option.replace('%ID', 0).replace('%V', "Height"))
+      .waitForExistAndClick(AddProductPage.feature_select_button.replace('%ID', 0))
+      .waitForExistAndClick(AddProductPage.feature_select_option.replace('%ID', 0).replace('%V', "Compositions"))
       .waitAndSetValue(AddProductPage.feature_custom_value.replace('%ID', 0), data.standard.features.feature1.custom_value);
   }
 
@@ -126,7 +126,7 @@ class Product extends CommonClient {
       .waitAndSetValue(addProductPage.select_feature_created, name)
       .waitForExistAndClick(addProductPage.result_feature_select.replace('%ID', 0))
       .pause(2000)
-      .selectByVisibleText(addProductPage.feature_value_select.replace('%ID', 0), value);
+      .selectByVisibleText(addProductPage.feature_value_select.replace('%ID', 0).replace('%V', 'not(@disabled)'), value);
   }
 
   clickNextOrPrevious(selector) {
