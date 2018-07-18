@@ -210,7 +210,10 @@ class CommonClient {
     return this.client
       .waitForExist(selector, timeout)
       .then(() => this.client.getAttribute(selector, attribute))
-      .then((variable) => global.tab[globalVar] = variable);
+      .then((variable) => {
+        console.log(variable);
+        global.tab[globalVar] = variable;
+      });
   }
 
   checkTextValue(selector, textToCheckWith, parameter = 'equal', pause = 0) {

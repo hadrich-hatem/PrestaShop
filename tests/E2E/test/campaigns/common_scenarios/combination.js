@@ -110,7 +110,7 @@ module.exports = {
       test('should set the "Depth" input', () => client.waitAndSetValue(AddProductPage.shipping_depth, data.common.cdepth));
       test('should set the "Weight" input', () => client.waitAndSetValue(AddProductPage.shipping_weight, data.common.cweight));
       test('should set the "Does this product incur additional shipping costs?" input', () => client.waitAndSetValue(AddProductPage.shipping_fees, data.common.cadd_ship_coast));
-      test('should click on "My carrier (Delivery next day!)" button', () => client.scrollWaitForExistAndClick(AddProductPage.shipping_available_carriers, 50));
+      test('should click on "My carrier (Delivery next day!)" button', () => client.scrollWaitForExistAndClick(AddProductPage.shipping_available_carriers.replace('%I', 1), 50));
     }, 'product/product');
   },
 

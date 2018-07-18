@@ -278,7 +278,6 @@ module.exports = {
         test('should set the "item per page" to 20 (back to normal)', () => client.waitAndSelectByValue(ProductList.item_per_page, 20));
     }, 'product/product', close);
   },
-
   deleteProduct(AddProductPage, productData) {
     scenario('Delete the created product', client => {
       test('should go to "Catalog" page', () => client.goToSubtabMenuPage(Menu.Sell.Catalog.catalog_menu, Menu.Sell.Catalog.products_submenu));
@@ -290,25 +289,6 @@ module.exports = {
       test('should click on "Reset" button', () => client.waitForExistAndClick(AddProductPage.catalog_reset_filter));
     }, 'product/check_product');
   },
-
-  addProductFeature(client, feature, id, predefinedValue = '', customValue = '', option = "predefined_value") {
-    test('should click on "Add a feature" button', () => {
-      return promise
-        .then(() => client.scrollTo(AddProductPage.add_related_product_btn))
-        .then(() => client.waitForExistAndClick(AddProductPage.product_add_feature_btn, 3000))
-    });
-    test('should choose "' + feature + '" feature from the dropdown list', () => {
-      return promise
-        .then(() => client.scrollWaitForExistAndClick(AddProductPage.feature_select_button.replace('%ID', id)))
-        .then(() => client.waitForVisibleAndClick(AddProductPage.feature_select_option.replace('%ID', id).replace('%V', feature)));
-    });
-    if (option === "predefined_value") {
-      test('should choose "Cotton" pre-defined value from the dropdown list', () => client.waitAndSelectByVisibleText(AddProductPage.feature_value_select.replace('%ID', id).replace('%V', 'not(@disabled)'), predefinedValue, 2000));
-    } else {
-      test('should set the "Custom value" input', () => client.waitAndSetValue(AddProductPage.feature_custom_value.replace('%ID', 1), customValue));
-    }
-  },
-
   checkProductInListFO(AccessPageFO, productPage, productData) {
     scenario('Check the created product in the Front Office', () => {
 
@@ -498,14 +478,14 @@ module.exports = {
       if (productData.hasOwnProperty('feature')) {
         test('should check that the product feature is well filled', () => {
           return promise
-            .then(() => client.isVisible(AddProductPage.feature_select_button))
+            .then(() => client.isVisible(AddProductPage.feature_select_button.replace('%ID', 0)))
             .then(() => client.checkFeatureValue(AddProductPage.predefined_value_option.replace('%V', productData.feature.predefined_value), AddProductPage.custom_value_input, productData.feature));
         });
       }
       if (productData.hasOwnProperty('combination') && productData.type === 'combination') {
         test('should check that "Product with combination" is well selected', () => client.checkAttributeValue(AddProductPage.product_combinations, 'value', '1'));
         test('should click on "Combinations" tab', () => client.scrollWaitForExistAndClick(AddProductPage.product_combinations_tab));
-        test('should check the appearance of the first generated combination ', () => client.waitForExist(AddProductPage.combination_first_table));
+        test('should check the appearance of the first generated combination ', () => client.waitForExist(AddProductPage.combination_table));
       }
       if (productData.type === 'virtual') {
         test('should click on "Virtual" tab', () => client.scrollWaitForExistAndClick(AddProductPage.product_combinations_tab));
@@ -514,10 +494,12 @@ module.exports = {
       test('should click on "Reset" button', () => client.waitForExistAndClick(AddProductPage.catalog_reset_filter));
     }, 'product/check_product');
   },
-  clickOnCoverAndSave(client) {
+  clickOnCoverAndSave(client, boom = false) {
     test('should click on "Cover image" checkbox', () => client.waitForExistAndClick(AddProductPage.picture_cover_checkbox));
     test('should click on "Save image settings" button', () =>  client.waitForExistAndClick(AddProductPage.picture_save_image_settings_button));
-    //test('should verify the appearance of the green validation', () => client.checkTextValue(AddProductPage.validation_msg, "Settings updated."));
+    if(boom) {
+      test('should verify the appearance of the green validation', () => client.checkTextValue(AddProductPage.validation_msg, "Settings updated."));
+    }
   },
   checkTinyMceButtons(client, id) {
     test('should check the existence of "Source" button', () => client.isExisting(AddProductPage.tinymce_buttons.replace('%ID', id + 1)));
@@ -548,9 +530,25 @@ module.exports = {
         .then(() => client.waitForVisibleAndClick(AddProductPage.feature_select_option.replace('%ID', id).replace('%V', feature)));
     });
     if (option === "predefined_value") {
-      test('should choose "Cotton" pre-defined value from the dropdown list', () => client.waitAndSelectByVisibleText(AddProductPage.feature_value_select.replace('%ID', id).replace('%V', 'not(@disabled)'), predefinedValue, 2000));
+      test('should choose "' + predefinedValue + '" pre-defined value from the dropdown list', () => client.waitAndSelectByVisibleText(AddProductPage.feature_value_select.replace('%ID', id).replace('%V', 'not(@disabled)'), predefinedValue, 2000));
     } else {
       test('should set the "Custom value" input', () => client.waitAndSetValue(AddProductPage.feature_custom_value.replace('%ID', 1), customValue));
     }
+  },
+  getProductQuantity(productName, globalQuantityVar) {
+    scenario('Get the quantity of "' + productName + '" product', client => {
+      test('should search for product by name', () => client.searchProductByName(productName));
+      test('should click on "Edit" button', () => client.waitForExistAndClick(ProductList.edit_button, 3000));
+      scenario('Get the first combination quantity', client => {
+        test('should click on "Combinations" tab', () => client.scrollWaitForExistAndClick(AddProductPage.product_combinations_tab, 3000));
+        test('should get the first combination quantity', () => {
+          return promise
+            .then(() => client.getCombinationData(1))
+            .then(() => client.getAttributeInVar(AddProductPage.combination_attribute_quantity.replace('%NUMBER', global.combinationId), 'value', globalQuantityVar));
+        });
+        test('should go to "Catalog" page', () => client.goToSubtabMenuPage(Menu.Sell.Catalog.catalog_menu, Menu.Sell.Catalog.products_submenu));
+        test('should click on "Reset button"', () => client.waitForExistAndClick(AddProductPage.catalog_reset_filter));
+      }, 'product/create_combinations');
+    }, 'product/check_product');
   }
 };

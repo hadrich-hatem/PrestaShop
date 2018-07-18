@@ -5,6 +5,7 @@ const {SearchProductPage} = require('../../../selectors/FO/search_product_page')
 const {productPage} = require('../../../selectors/FO/product_page');
 const {Menu} = require('../../../selectors/BO/menu.js');
 let data = require('./../../../datas/product-data');
+const commonScenarios = require('../../common_scenarios/product');
 let promise = Promise.resolve();
 
 scenario('Create a pack of products in the Back Office', client => {
@@ -54,7 +55,7 @@ scenario('Create a pack of products in the Back Office', client => {
     });
     test('should click on "ADD RELATED PRODUCT" button', () => client.scrollWaitForExistAndClick(AddProductPage.add_related_product_btn, 50));
     test('should search and add a related product', () => client.searchAndAddRelatedProduct());
-    test('should click on "ADD A FEATURE" and select one', () => client.addFeatureHeight('pack'));
+    commonScenarios.addProductFeature(client, "Compositions", 1, '', data.standard.features.feature1.custom_value, "custom_value");
     test('should set the "Tax exclude" price input', () => client.setPrice(AddProductPage.priceTE_shortcut, data.common.priceTE));
     test('should set the "Reference" input', () => client.waitAndSetValue(AddProductPage.product_reference, data.common.product_reference));
     test('should switch the product online', () =>  {

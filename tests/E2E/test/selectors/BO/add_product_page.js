@@ -46,13 +46,11 @@ module.exports = {
     add_feature_to_product_button: '//*[@id="add_feature_button"]',
     select_feature_created: '/html/body//span/span[1]/input',
     feature_select_button: '//*[@id="select2-form_step1_features_%ID_feature-container"]',
-    feature_select_button1: '//*[@id="features-content"]/div/div/div[1]/fieldset/span/span[1]/span',
     feature_btn:'//*[@id="add_feature_button"]',
     result_feature_select: '//*[@id="select2-form_step1_features_%ID_feature-results"]/li',
     summary_textarea: '(//*[@id="form_step1_description_short"]//div[@class="mce-tinymce mce-container mce-panel"])[1]',
     description_textarea: '(//*[@id="form_step1_description"]//div[@class="mce-tinymce mce-container mce-panel"])[1]',
     tab_description: '//*[@id="tab_description"]/a',
-    feature_value_select: '//*[@id="form_step1_features_%ID_value" and %V]',
     tab_summary: '//*[@id="tab_description_short"]/a',
     tinymce_buttons: '//*[@id="mce_%ID"]',
     tinymce_validation_message: '//*[@id="form_step1_description_short"]//ul[contains(@class, "text-danger")]/li',
@@ -66,6 +64,7 @@ module.exports = {
     parent_category_search_input: '//input[@type="search" and contains(@class, "select2-search")]',
     parent_category_option: '//*[@id="select2-form_step1_new_category_id_parent-results"]/li[text()="%N"]',
     category_checkbox: '//*[@id="form_step1_categories"]//label[text()[contains(.,"%S")]]/input[1]',
+    category_name_span: '//*[@id="ps_categoryTags"]/span[%I]/span',
     delete_category_icon: '//*[@id="ps_categoryTags"]/span[%I]/a',
     category_home: '//*[@id="form_step1_categories"]/ul/li/div/label/input',
     product_add_brand_btn: '//*[@id="add_brand_button"]',
@@ -79,11 +78,10 @@ module.exports = {
     product_pack_delete_button: '//*[@id="form_step1_inputPackItems-data"]/li[%I]//button[contains(@class,"delete")]',
     add_related_product_btn: '//*[@id="add-related-product-button"]',
     search_add_related_product_input: '//*[@id="form_step1_related_products"]',
-    related_product_item: '//*[@id="related-content"]/div[2]/fieldset/div/div[1]/span/div/div/div[%I]',//@TODO
+    related_product_item: '//*[@id="related-content"]/div[2]/fieldset/div/div[1]/span/div/div/div[%I]',
     delete_related_product_icon: '//*[@id="reset_related_product"]',
     related_product_delete_icon: '//*[@id="form_step1_related_products-data"]/li[%I]//i',
     product_add_feature_btn: '//*[@id="add_feature_button"]',
-    feature_select_button: '//*[@id="select2-form_step1_features_%ID_feature-container"]',
     feature_select_option: '//*[@id="select2-form_step1_features_%ID_feature-results"]/li[text()="%V"]',
     feature_custom_value: '//*[@id="form_step1_features_%ID_custom_value_1"]',
     priceTE_shortcut: '#form_step1_price_shortcut',
@@ -245,6 +243,7 @@ module.exports = {
     get catalog_submit_filter() {
       return this.catalog_product_table + '.column-filters button[name="products_filter_submit"]';
     },
+    catalog_home: '//*[@id="form_step1_categories"]/ul/li/div/label',
     catalog_first_element_radio: '//*[@id="form_step1_categories"]/ul/li/ul/li[1]/div',
     catalog_second_element_radio: '//*[@id="form_step1_categories"]/ul/li/ul/li[2]/div',
     category_radio_button: '//*[@id="form_step1_categories"]//input[@name="ignore" and @value="%VALUE"]',
@@ -276,8 +275,9 @@ module.exports = {
     add_products_to_pack: '//*[@id="js_form_step1_inputPackItems"]/div',
     attribute_group_name: '//*[@id="attributes-list"]//a[text()[contains(.,"%NAME")]]',
     attribute_value_checkbox: '//*[@id="attribute-group-%ID"]/div/div[%S]//label',
-    category_expand_button: '//*[@id="categories"]//span[@data-action="expand"]',
-    category_collapse_button: '//*[@id="categories"]//span[@data-action="reduce"]'
+    category_expand_button: '//*[@id="categories-tree-expand"]',
+    category_collapse_button: '//*[@id="categories-tree-reduce"]',
+    category_clothes_label: '//*[@id="form_step1_categories"]//div[@class="checkbox"]//label[contains(., "Clothes")]'
   },
   ProductList: {
     product_id: '//*[@id="product_catalog_list"]//tr[%ID]/td[2]/label',
