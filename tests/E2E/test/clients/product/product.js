@@ -132,7 +132,7 @@ class Product extends CommonClient {
       .waitAndSetValue(addProductPage.select_feature_created, name)
       .waitForExistAndClick(addProductPage.result_feature_select.replace('%ID', 0))
       .pause(2000)
-      .selectByVisibleText(addProductPage.feature_value_select, value);
+      .selectByVisibleText(addProductPage.feature_value_select.replace('%ID', 0).replace('%V', 'not(@disabled)'), value);
   }
 
   clickNextOrPrevious(selector) {

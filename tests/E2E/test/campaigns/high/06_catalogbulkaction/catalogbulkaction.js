@@ -25,7 +25,7 @@ scenario('Catalog bulk action', () => {
     test('should verify the appearance of the green validation', () => client.checkTextValue(CatalogPage.green_validation, 'close\nProduct(s) successfully deactivated.'));
     test('should get the products page number', () => client.getProductPageNumber('product_catalog_list'));
     test('should verify that all products statuses are disabled successfully', () => {
-      for (let j = 0; j < global.productsPageNumber; j++) {
+      for (let j = 0; j < global.productsNumber; j++) {
         promise = client.getProductStatus(CatalogPage.product_status_icon.replace('%S', j + 1), j);
         promise = client.pause(2000);
       }
@@ -45,11 +45,12 @@ scenario('Catalog bulk action', () => {
     test('should verify the appearance of the green validation', () => client.checkTextValue(CatalogPage.green_validation, 'close\nProduct(s) successfully activated.'));
     test('should get the products page number', () => client.getProductPageNumber('product_catalog_list'));
     test('should verify that all products statuses are enabled successfully', () => {
-      for (let j = 0; j < global.productsPageNumber; j++) {
+      for (let j = 0; j < global.productsNumber; j++) {
         promise = client.getProductStatus(CatalogPage.product_status_icon.replace('%S', j + 1), j);
         promise = client.pause(2000);
       }
       return promise
+        .then(() => console.log(global.productsNumber))
         .then(() => expect(global.productStatus).to.not.include("clear"));
     });
   }, 'catalogbulkaction');
@@ -76,7 +77,8 @@ scenario('Catalog bulk action', () => {
         .then(() => {
           if (global.isVisible) {
             return promise
-              .then(() => client.checkTextValue(ProductList.pagination_products, parseInt(global.productsNumber) + number, 'contain'));
+              .then(() => console.log(global.productsNumber))
+              .then(() => client.checkTextValue(ProductList.pagination_products, parseInt(global.productsNumber) + number - 1, 'contain', 2000));
           }
         });
     });
